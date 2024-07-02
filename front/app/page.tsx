@@ -381,7 +381,7 @@ export default function Component() {
   );
 }
 
-function ChevronDownIcon(props) {
+function ChevronDownIcon(props: any) {
   return (
     <svg
       {...props}
@@ -400,7 +400,7 @@ function ChevronDownIcon(props) {
   );
 }
 
-function ChevronLeftIcon(props) {
+function ChevronLeftIcon(props : any) {
   return (
     <svg
       {...props}
@@ -419,7 +419,7 @@ function ChevronLeftIcon(props) {
   );
 }
 
-function HeartIcon(props) {
+function HeartIcon(props : any) {
   return (
     <svg
       {...props}
@@ -438,7 +438,7 @@ function HeartIcon(props) {
   );
 }
 
-function MenuIcon(props) {
+function MenuIcon(props any) {
   return (
     <svg
       {...props}
@@ -459,7 +459,7 @@ function MenuIcon(props) {
   );
 }
 
-function MinusIcon(props) {
+function MinusIcon(props : any) {
   return (
     <svg
       {...props}
@@ -478,7 +478,7 @@ function MinusIcon(props) {
   );
 }
 
-function PlusIcon(props) {
+function PlusIcon(props : any) {
   return (
     <svg
       {...props}
@@ -498,7 +498,7 @@ function PlusIcon(props) {
   );
 }
 
-function SearchIcon(props) {
+function SearchIcon(props : any) {
   return (
     <svg
       {...props}
@@ -518,7 +518,7 @@ function SearchIcon(props) {
   );
 }
 
-function StarIcon(props) {
+function StarIcon(props : any) {
   return (
     <svg
       {...props}
