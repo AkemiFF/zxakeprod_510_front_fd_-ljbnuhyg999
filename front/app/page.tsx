@@ -400,7 +400,7 @@ function ChevronDownIcon(props: any) {
   );
 }
 
-function ChevronLeftIcon(props : any) {
+function ChevronLeftIcon(props: any) {
   return (
     <svg
       {...props}
@@ -419,7 +419,7 @@ function ChevronLeftIcon(props : any) {
   );
 }
 
-function HeartIcon(props : any) {
+function HeartIcon(props: any) {
   return (
     <svg
       {...props}
@@ -438,7 +438,7 @@ function HeartIcon(props : any) {
   );
 }
 
-function MenuIcon(props any) {
+function MenuIcon(props: any) {
   return (
     <svg
       {...props}
@@ -459,7 +459,7 @@ function MenuIcon(props any) {
   );
 }
 
-function MinusIcon(props : any) {
+function MinusIcon(props: any) {
   return (
     <svg
       {...props}
@@ -478,7 +478,7 @@ function MinusIcon(props : any) {
   );
 }
 
-function PlusIcon(props : any) {
+function PlusIcon(props: any) {
   return (
     <svg
       {...props}
@@ -498,7 +498,7 @@ function PlusIcon(props : any) {
   );
 }
 
-function SearchIcon(props : any) {
+function SearchIcon(props: any) {
   return (
     <svg
       {...props}
@@ -518,7 +518,7 @@ function SearchIcon(props : any) {
   );
 }
 
-function StarIcon(props : any) {
+function StarIcon(props: any) {
   return (
     <svg
       {...props}
