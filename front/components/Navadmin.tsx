@@ -15,6 +15,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import {
+  ArchiveIcon,
+  BellIcon,
+  ChatBubbleIcon,
+  PersonIcon,
+} from "@radix-ui/react-icons";
+import { Button } from "./ui/button";
 
 interface navigation {
   dash: String;
@@ -22,6 +29,7 @@ interface navigation {
   craft: String;
   tour: String;
   client: String;
+  admin: String;
 }
 
 const Navadmin = (nav: navigation) => {
@@ -42,7 +50,7 @@ const Navadmin = (nav: navigation) => {
               <Link
                 href="/admin/dashboard"
                 className={
-                  "flex h-9 w-9 items-center justify-center rounded-lg  text-accent-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
+                  "flex h-9 w-9 items-center justify-center rounded-lg  text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
                   nav.dash
                 }
                 prefetch={false}
@@ -56,7 +64,28 @@ const Navadmin = (nav: navigation) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="/admin/hotel/show"
+                href="/admin/message"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                prefetch={false}
+              >
+                <div className="relative inline-block">
+                  <Button variant="ghost" size="icon" className="rounded-full">
+                    <ChatBubbleIcon className="h-5 w-5" />
+                    <span className="sr-only">Message</span>
+                  </Button>
+                  <div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
+                    2
+                  </div>
+                </div>
+                <span className="sr-only">Message</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Message</TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/admin/hotel"
                 className={
                   "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
                   nav.hotels
@@ -64,16 +93,19 @@ const Navadmin = (nav: navigation) => {
                 prefetch={false}
               >
                 <HotelIcon className="h-5 w-5" />
-                <span className="sr-only">Hotels</span>
+                <span className="sr-only">accommodation</span>
               </Link>
             </TooltipTrigger>
-            <TooltipContent side="right">Hotels</TooltipContent>
+            <TooltipContent side="right">accommodation</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                href="/admin/craft"
+                className={
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
+                  nav.craft
+                }
                 prefetch={false}
               >
                 <BriefcaseIcon className="h-5 w-5" />
@@ -85,8 +117,11 @@ const Navadmin = (nav: navigation) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                href="/admin/operateur"
+                className={
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
+                  nav.tour
+                }
                 prefetch={false}
               >
                 <CompassIcon className="h-5 w-5" />
@@ -108,9 +143,48 @@ const Navadmin = (nav: navigation) => {
             </TooltipTrigger>
             <TooltipContent side="right">Clients</TooltipContent>
           </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/admin/administrator"
+                className={
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
+                  nav.admin
+                }
+                prefetch={false}
+              >
+                <PersonIcon className="h-5 w-5" />
+                <span className="sr-only">Administrator</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Administrator</TooltipContent>
+          </Tooltip>
         </TooltipProvider>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Link
+                href="/admin/notification"
+                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                prefetch={false}
+              >
+                <div className="relative inline-block">
+                  <Button variant="ghost" size="icon" className="rounded-full">
+                    <BellIcon className="h-6 w-6" />
+                    <span className="sr-only">Notifications</span>
+                  </Button>
+                  <div className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-medium text-primary-foreground">
+                    3
+                  </div>
+                </div>
+                <span className="sr-only">Notification</span>
+              </Link>
+            </TooltipTrigger>
+            <TooltipContent side="right">Notification</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>

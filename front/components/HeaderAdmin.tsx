@@ -35,6 +35,7 @@ import admin from "../app/favicon.ico";
 
 interface HeaderAdminProps {
   name: string;
+  links: string;
   more: string;
 }
 
@@ -67,15 +68,15 @@ export default function HeaderAdmin(propss: HeaderAdminProps) {
               Dashboard
             </Link>
             <Link
-              href="#"
+              href="/admin/hotel"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
               prefetch={false}
             >
               <HotelIcon className="h-5 w-5" />
-              Hotels
+              accommodation
             </Link>
             <Link
-              href="#"
+              href="/admin/craft"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
               prefetch={false}
             >
@@ -113,7 +114,7 @@ export default function HeaderAdmin(propss: HeaderAdminProps) {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/admin/hotel/show" prefetch={false}>
+              <Link href={"/admin/" + propss.links} prefetch={false}>
                 {propss.name}
               </Link>
             </BreadcrumbLink>

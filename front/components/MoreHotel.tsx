@@ -16,12 +16,28 @@ import image2 from "../public/chambre/hotel2.jpg";
 import image3 from "../public/chambre/hotel3.webp";
 import image4 from "../public/chambre/hotel4.jpg";
 import image5 from "../public/chambre/chambre5.avif";
+import Autoplay from "embla-carousel-autoplay";
+import MapInfo from "./MapInfo";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "./ui/accordion";
+import Link from "next/link";
 export default function MoreHotel() {
   return (
     <div className="max-w-4xl mx-auto p-6 sm:p-8 md:p-10">
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-20">
         <div>
-          <Carousel className="rounded-lg overflow-hidden">
+          <Carousel
+            className="rounded-lg max-sm:overflow-hidden"
+            plugins={[
+              Autoplay({
+                delay: 2000,
+              }),
+            ]}
+          >
             <CarouselContent>
               <CarouselItem>
                 <Image
@@ -32,6 +48,7 @@ export default function MoreHotel() {
                   className="object-cover w-full aspect-[3/2]"
                 />
               </CarouselItem>
+
               <CarouselItem>
                 <Image
                   src={image2}
@@ -76,7 +93,9 @@ export default function MoreHotel() {
         <div className="grid gap-6">
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold">The Ritz-Carlton, Bali</h1>
+              <h1 className="text-2xl font-bold text-primary">
+                The Ritz-Carlton, Bali
+              </h1>
               <div className="flex items-center gap-0.5 text-primary">
                 <StarIcon className="w-5 h-5 fill-yellow-500" />
                 <StarIcon className="w-5 h-5 fill-yellow-500" />
@@ -98,6 +117,11 @@ export default function MoreHotel() {
               </p>
             </div>
             <div className="grid gap-1">
+              <div className="text-sm font-medium">Type</div>
+              <p className="text-muted-foreground">Hotel</p>
+            </div>
+
+            <div className="grid gap-1">
               <div className="text-sm font-medium">Amenities</div>
               <div className="grid grid-cols-2 gap-2">
                 <div className="flex items-center gap-2">
@@ -118,6 +142,27 @@ export default function MoreHotel() {
                 </div>
               </div>
             </div>
+            <div>
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="item-1">
+                  <AccordionTrigger>
+                    Who is Responsible for This accommodation?
+                  </AccordionTrigger>
+                  <AccordionContent>Name: Rabe Randria</AccordionContent>
+                  <AccordionContent>
+                    Email: contact@[yourtravelagencyname].com
+                  </AccordionContent>
+                  <AccordionContent>Contact : +261 33 ...</AccordionContent>
+                  <AccordionContent>
+                    <Link href="#">
+                      <Button className="bg-slate-900 hover:bg-slate-800">
+                        Show more
+                      </Button>
+                    </Link>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            </div>
           </div>
         </div>
       </div>
@@ -128,7 +173,7 @@ export default function MoreHotel() {
         </Button>
       </div>
       <div className="flex items-center justify-center my-20 ">
-        <Button size="lg">View localisation</Button>
+        <MapInfo />
       </div>
 
       <Separator className="my-8" />

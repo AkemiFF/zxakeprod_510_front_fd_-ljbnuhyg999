@@ -18,6 +18,7 @@ import Link from "next/link";
 interface HotelModel {
   name: string;
   description: string;
+  type: String;
   rating: number;
   review: number;
   roomNumber: number;
@@ -26,16 +27,16 @@ interface HotelModel {
 
 const Hotelview = (hotel: HotelModel) => {
   return (
-    <div className="bg-card p-4 rounded-lg shadow-sm py-10">
+    <div className="bg-card p-4 rounded-lg shadow-sm py-10 shadow-primary">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-medium">{hotel.name}</h2>
         <div className="flex items-center gap-2">
           <Button size="icon" variant="ghost">
-            <FilePenIcon className="w-5 h-5" />
+            <FilePenIcon className="w-5 h-5 " />
             <span className="sr-only">Edit</span>
           </Button>
           <Button size="icon" variant="ghost">
-            <TrashIcon className="w-5 h-5" />
+            <TrashIcon className="w-5 h-5 text-red-700" />
             <span className="sr-only">Delete</span>
           </Button>
           <DropdownMenu>
@@ -52,7 +53,7 @@ const Hotelview = (hotel: HotelModel) => {
                   <span>{hotel.address}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <StarIcon className="w-5 h-5" />
+                  <StarIcon className="w-5 h-5 fill-yellow-500" />
                   <span>
                     {hotel.rating}/5 {hotel.review}
                   </span>
@@ -66,13 +67,15 @@ const Hotelview = (hotel: HotelModel) => {
           </DropdownMenu>
         </div>
       </div>
+      <p className="text-muted-foreground mb-4">Type : {hotel.type}</p>
       <p className="text-muted-foreground mb-4">{hotel.description}</p>
+
       <div className="flex items-center justify-between">
         <Link href="/admin/hotel/more">
-          <Button variant="outline">View</Button>
+          <Button>View</Button>
         </Link>
         <div className="flex items-center gap-2">
-          <StarIcon className="w-5 h-5 fill-primary" />
+          <StarIcon className="w-5 h-5 fill-yellow-500" />
           <span className="font-medium">4.5</span>
         </div>
       </div>

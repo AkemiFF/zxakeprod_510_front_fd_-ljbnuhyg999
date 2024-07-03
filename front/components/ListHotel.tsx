@@ -31,6 +31,7 @@ import Link from "next/link";
 interface HotelModel {
   name: string;
   description: string;
+  type: String;
   rating: number;
   review: number;
   roomNumber: number;
@@ -41,6 +42,7 @@ export default function ListHotel() {
   const hotels: HotelModel[] = [
     {
       name: "Hotel Acme",
+      type: "Hotel",
       description: "Located in the heart of Paris",
       rating: 4.5,
       review: 450,
@@ -48,7 +50,8 @@ export default function ListHotel() {
       address: "123 Main St, Paris, France",
     },
     {
-      name: "Hotel Belle Époque",
+      name: "Belle Époque",
+      type: "Bengalo",
       description: "Stunning view of the Eiffel Tower",
       rating: 4.7,
       review: 380,
@@ -57,6 +60,7 @@ export default function ListHotel() {
     },
     {
       name: "Hotel Clarisse",
+      type: "hotel",
       description: "Situated in the bustling city center",
       rating: 4.9,
       review: 300,
@@ -64,7 +68,8 @@ export default function ListHotel() {
       address: "789 Oak St, Paris, France",
     },
     {
-      name: "Hotel Dreams",
+      name: "Villa Dreams",
+      type: "Villa",
       description: "Nestled in the heart of New York City",
       rating: 4.2,
       review: 500,
@@ -80,7 +85,7 @@ export default function ListHotel() {
           <Link href="/admin/hotel/add">
             <Button variant="outline">
               <PlusIcon className="w-4 h-4 mr-2" />
-              Add Hotel
+              Add accommodation
             </Button>
           </Link>
           <Button variant="outline">
@@ -99,6 +104,7 @@ export default function ListHotel() {
             key={hotel.name}
             name={hotel.name}
             description={hotel.description}
+            type={hotel.type}
             rating={hotel.rating}
             review={hotel.review}
             roomNumber={hotel.roomNumber}

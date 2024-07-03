@@ -8,27 +8,51 @@ import {
 } from "@/components/ui/card";
 import Navadmin from "@/components/Navadmin";
 import { BarChart, LineChart } from "@/components/chart";
-import { BriefcaseIcon, HotelIcon, UsersIcon } from "@/components/icons";
+import {
+  BriefcaseIcon,
+  CompassIcon,
+  HotelIcon,
+  UsersIcon,
+} from "@/components/icons";
 import HeaderAdmin from "@/components/HeaderAdmin";
 
 export default function Component() {
   let value = "bg-accent";
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <Navadmin dash={value} hotels={""} craft={""} tour={""} client={""} />
+      <Navadmin
+        dash={value}
+        hotels={""}
+        craft={""}
+        tour={""}
+        client={""}
+        admin={""}
+      />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <HeaderAdmin name="Dashboard" more="Home" />
+        <HeaderAdmin name="Dashboard" more="Home" links="dashboard" />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Hotels</CardTitle>
-                <CardDescription>Registered Hotels</CardDescription>
+                <CardTitle>accommodation</CardTitle>
+                <CardDescription>Registered accommodation</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">
                   <div className="text-4xl font-bold">125</div>
                   <HotelIcon className="h-8 w-8 text-primary" />
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>Tour Operator</CardTitle>
+                <CardDescription>Registered Tour Operator</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between">
+                  <div className="text-4xl font-bold">35</div>
+                  <CompassIcon className="h-8 w-8 text-primary" />
                 </div>
               </CardContent>
             </Card>
