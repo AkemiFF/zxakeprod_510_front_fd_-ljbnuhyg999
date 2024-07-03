@@ -92,7 +92,7 @@ export default function Component() {
                 <Calendar
                   mode="range"
                   defaultValue={[new Date(dates.start), new Date(dates.end)]}
-                  onValueChange={(value) => {
+                  onValueChange={(value: { toISOString: () => string }[]) => {
                     setDates({
                       start: value[0].toISOString().split("T")[0],
                       end: value[1].toISOString().split("T")[0],
