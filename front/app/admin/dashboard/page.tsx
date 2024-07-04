@@ -15,6 +15,7 @@ import {
   UsersIcon,
 } from "@/components/icons";
 import HeaderAdmin from "@/components/HeaderAdmin";
+import { Spotlight } from "@/components/ui/SpotLight";
 
 export default function Component() {
   let value = "bg-accent";
@@ -29,6 +30,7 @@ export default function Component() {
         admin={""}
       />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+        <Spotlight fill="#5B876B" className="absolute top-0" />
         <HeaderAdmin name="Dashboard" more="Home" links="dashboard" />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2">

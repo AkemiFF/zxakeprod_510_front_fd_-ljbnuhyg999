@@ -24,11 +24,10 @@ interface HotelModel {
   type: String;
   rating: number;
   review: number;
-  roomNumber: number;
   address: string;
 }
 
-const Hotelview = (hotel: HotelModel) => {
+const Operatorview = (hotel: HotelModel) => {
   return (
     <CardContainer className="relative bg-card p-4 rounded-lg shadow-sm  shadow-primary  hover:shadow-2xl hover:shadow-emerald-500/2 flex flex-col">
       <CardItem className="" translateZ="60">
@@ -62,10 +61,6 @@ const Hotelview = (hotel: HotelModel) => {
                       {hotel.rating}/5 {hotel.review}
                     </span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <BedIcon className="w-5 h-5" />
-                    <span>{hotel.roomNumber}</span>
-                  </div>
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -76,7 +71,7 @@ const Hotelview = (hotel: HotelModel) => {
       <p className="text-muted-foreground mb-4">{hotel.description}</p>
 
       <div className="flex items-center justify-between ">
-        <Link href="/admin/hotel/more">
+        <Link href="/admin/operateur/more">
           <Button>View</Button>
         </Link>
         <div className="flex items-center gap-2">
@@ -88,4 +83,4 @@ const Hotelview = (hotel: HotelModel) => {
   );
 };
 
-export default Hotelview;
+export default Operatorview;

@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ListAdminOperator from "@/components/ListAdminOperator";
 import ListAdminCraft from "@/components/ListAdminCraft";
 import ChatInterface from "@/components/ChatInterface";
+import { Spotlight } from "@/components/ui/SpotLight";
 
 export default function page() {
   let value = "bg-accent ";
@@ -22,8 +23,11 @@ export default function page() {
       />
 
       <div className="flex flex-col sm:gap-4 sm:pl-14">
-        {/* <HeaderAdmin name="Administrator" more="List" links="administrator" /> */}
+        <div className="max-lg:hidden max-sm:block">
+          <HeaderAdmin name="Administrator" more="List" links="administrator" />
+        </div>
         <ChatInterface />
+        <Spotlight fill="#5B876B" className="absolute top-0" />
       </div>
     </div>
   );

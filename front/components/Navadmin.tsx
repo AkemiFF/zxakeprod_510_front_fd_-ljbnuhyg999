@@ -133,8 +133,11 @@ const Navadmin = (nav: navigation) => {
           <Tooltip>
             <TooltipTrigger asChild>
               <Link
-                href="#"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                href="/admin/client"
+                className={
+                  "flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
+                  nav.client
+                }
                 prefetch={false}
               >
                 <UsersIcon className="h-5 w-5" />

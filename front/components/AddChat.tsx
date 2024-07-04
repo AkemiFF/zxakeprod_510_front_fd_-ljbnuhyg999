@@ -60,7 +60,7 @@ export default function AddChat() {
       contact.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [contacts, searchTerm]);
-  const handleAddToChat = (contact) => {
+  const handleAddToChat = (contact: any) => {
     setSelectedContact(contact);
   };
   return (

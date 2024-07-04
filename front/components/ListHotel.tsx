@@ -27,6 +27,8 @@ import {
 } from "./icons";
 import Hotelview from "./Hotelview";
 import Link from "next/link";
+import { Meteors } from "./ui/Meteor";
+import { HoverEffect } from "./ui/card-hover-effect";
 
 interface HotelModel {
   name: string;
@@ -100,16 +102,18 @@ export default function ListHotel() {
       </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {hotels.map((hotel, i) => (
-          <Hotelview
-            key={hotel.name}
-            name={hotel.name}
-            description={hotel.description}
-            type={hotel.type}
-            rating={hotel.rating}
-            review={hotel.review}
-            roomNumber={hotel.roomNumber}
-            address={hotel.address}
-          />
+          <>
+            <Hotelview
+              key={hotel.name}
+              name={hotel.name}
+              description={hotel.description}
+              type={hotel.type}
+              rating={hotel.rating}
+              review={hotel.review}
+              roomNumber={hotel.roomNumber}
+              address={hotel.address}
+            />
+          </>
         ))}
       </div>
       <div className="flex items-center justify-center mt-8">
