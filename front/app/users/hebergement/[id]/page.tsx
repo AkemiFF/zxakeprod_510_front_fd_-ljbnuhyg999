@@ -4,6 +4,8 @@
  * @see https://v0.dev/t/1ThCvMSnXNF
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
+
+"use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -15,11 +17,15 @@ import {
 } from "@/components/ui/collapsible";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { Undo2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function DetailsHebergments() {
+  const router = useRouter();
   return (
     <div className="max-w-6xl p-4 mx-auto lg:px-6 sm:py-8 md:py-10">
+      <Undo2 className="cursor-pointer mb-5 " onClick={() => router.back()} />
       <section className="flex-col hidden gap-4 pb-4 sm:flex sm:flex-row sm:items-center sm:pb-8">
         <h1 className="text-xl font-semibold tracking-tight lg:text-3xl">
           Cozy and Charming Mountain Retreat with Hot Tub

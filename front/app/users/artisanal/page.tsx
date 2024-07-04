@@ -15,10 +15,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { Undo2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function ArtisanalListe() {
+  const router = useRouter();
   const [products, setProducts] = useState([
     {
       id: 1,
@@ -106,6 +109,10 @@ export default function ArtisanalListe() {
   };
   return (
     <section className="w-full py-12">
+      <Undo2
+        className="cursor-pointer mb-5 text-white"
+        onClick={() => router.back()}
+      />
       <div className="container grid gap-6 px-4 md:gap-8 md:px-6">
         <header className="flex flex-col items-start gap-4 md:flex-row md:items-center md:gap-8">
           <div className="grid gap-1">

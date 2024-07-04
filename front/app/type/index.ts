@@ -18,3 +18,8 @@ export interface hebergement {
   dateCreated: string;
   dateUpdate: string;
 }
+
+export interface commandListReducer {
+  value: string;
+  label: string;
+}

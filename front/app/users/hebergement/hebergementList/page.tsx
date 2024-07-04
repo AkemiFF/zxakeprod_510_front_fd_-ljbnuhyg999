@@ -22,7 +22,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Undo2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 export default function HebergementList() {
@@ -38,6 +40,7 @@ export default function HebergementList() {
     propertyRate: [],
     facilities: [],
   });
+  const router = useRouter();
   // const handleFilterChange = (category, value) => {
   //   setFilters((prevFilters) => {
   //     const newFilters = { ...prevFilters };
@@ -85,6 +88,10 @@ export default function HebergementList() {
   ];
   return (
     <div className="flex flex-col items-center w-full min-h-screen bg-gray-100">
+      <Undo2
+        className="cursor-pointer mb-5 text-white"
+        onClick={() => router.back()}
+      />
       <header className="w-full bg-primary py-4">
         <div className="container mx-auto flex justify-between items-center px-4">
           <div className="flex items-center space-x-4">

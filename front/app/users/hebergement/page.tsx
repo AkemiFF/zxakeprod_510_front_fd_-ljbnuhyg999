@@ -11,7 +11,9 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Undo2 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import hotel from "../../../public/hotel/hotel.jpg";
 import hotel2 from "../../../public/hotel/hotel2.jpg";
@@ -70,6 +72,7 @@ export default function Hebergement() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("");
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-[#e6f1f0]">
       <header className="flex items-center justify-between p-4 bg-white shadow-md">
@@ -153,6 +156,10 @@ export default function Hebergement() {
           </div>
         </section>
         <section className="mt-8">
+          <Undo2
+            className="cursor-pointer mb-5 text-white"
+            onClick={() => router.back()}
+          />
           <h2 className="text-2xl font-bold">Suggestions for you</h2>
           <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
             {exclusiveHotels.map((hotel) => (

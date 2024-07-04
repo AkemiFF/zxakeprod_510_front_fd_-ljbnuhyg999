@@ -5,7 +5,7 @@
  */
 
 "use client";
-import { hebergement, region } from "@/app/type";
+import { commandListReducer, hebergement, region } from "@/app/type";
 import RegionComponent from "@/components/front/RegionComponent";
 import { HotelIcon } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -23,10 +23,34 @@ import antananarivo from "../public/region/antanarivo.jpg";
 import fianarantsoa from "../public/region/fianaratsoa.jpg";
 import toliara from "../public/region/toliara.jpg";
 
+import DropComponent from "@/components/front/search/DropComponent";
 import hotel from "../public/hotel/hotel.jpg";
 import hotel2 from "../public/hotel/hotel2.jpg";
 import hotel3 from "../public/hotel/hotel3.jpg";
 import hotel1 from "../public/hotel/hotel4.jpg";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarIcon } from "@radix-ui/react-icons";
+import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 
 const regions: region[] = [
   {
@@ -106,11 +130,82 @@ const exclusiveHotels: hebergement[] = [
     dateUpdate: "2024-06-01T00:00:00Z",
   },
 ];
+
+const accommodation: commandListReducer[] = [
+  {
+    label: "Hotel",
+    value: "hotel",
+  },
+  {
+    label: "Resort",
+    value: "resort",
+  },
+  {
+    label: "Vacation",
+    value: "vacation",
+  },
+];
+
+const element: commandListReducer[] = [
+  { label: "Accommodation", value: "Accommodation" },
+  { label: "Operator tours", value: "Operator tours" },
+  { label: "Craft", value: "Craft" },
+];
+
+const destination = [
+  { label: "Mananjary", value: "Mananjary" },
+  { label: "Manakara", value: "Manakara" },
+  { label: "Antsirabe", value: "Antsirable" },
+];
+const FormSchema = z.object({
+  dob: z.date({
+    required_error: "A",
+  }),
+});
+
 export default function Home() {
   const [location, setLocation] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("");
+
+  const [choice, setChoice] = useState("");
+  const [accommodationChoice, setAccommodationChoice] = useState("");
+  const [destinationChoice, setDestinationChoice] = useState("");
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+  const form2 = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+  });
+  console.log(form, form2);
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    toast({
+      title: "You submitted the following values:",
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
+    });
+  }
+
+  const handleAccommodationItemSelected = (selectedValue: string) => {
+    console.log("Selected item:", selectedValue);
+    setAccommodationChoice(selectedValue);
+  };
+  const handleItemSelected = (selectedValue: string) => {
+    console.log("Selected item:", selectedValue);
+    setChoice(selectedValue);
+  };
+  const handleDestinationItemSelected = (selectedValue: string) => {
+    console.log("Selected item:", selectedValue);
+    setDestinationChoice(selectedValue);
+  };
+
+  console.log(choice);
+
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center justify-between p-4 bg-white shadow-md">
@@ -136,7 +231,6 @@ export default function Home() {
           </a>
         </nav>
         <div className="flex space-x-4">
-          <Button variant="ghost">Login</Button>
           <Button>Register</Button>
         </div>
       </header>
@@ -164,31 +258,129 @@ export default function Home() {
               <StarIcon className="w-6 h-6 text-yellow-500" />
               <StarIcon className="w-6 h-6 text-yellow-500" />
             </div>
-            <div className="flex mt-8 space-x-2 bg-white p-4 rounded-md shadow-md">
-              <Input
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Location"
-                className="w-full"
+            <div className="flex mt-8 space-x-2 bg-white p-4 rounded-md shadow-md text-black">
+              <DropComponent
+                datas={element}
+                onSelectedValue={handleItemSelected}
               />
-              <Input
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                placeholder="Check-in"
-                className="w-full"
-              />
-              <Input
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                placeholder="Check-out"
-                className="w-full"
-              />
-              <Input
-                value={guests}
-                onChange={(e) => setGuests(e.target.value)}
-                placeholder="Guests"
-                className="w-full"
-              />
+              {choice === "Accommodation" ? (
+                <div className="flex space-x-2">
+                  <DropComponent
+                    datas={accommodation}
+                    onSelectedValue={handleAccommodationItemSelected}
+                  />
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="space-y-8"
+                    >
+                      <FormField
+                        control={form.control}
+                        name="dob"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-[240px] pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange}
+                                  disabled={(date) => date < new Date()}
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormLabel>Check in</FormLabel>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </form>
+                  </Form>
+                  <Form {...form2}>
+                    <form
+                      onSubmit={form2.handleSubmit(onSubmit)}
+                      className="space-y-8"
+                    >
+                      <FormField
+                        control={form2.control}
+                        name="dob"
+                        render={({ field }) => (
+                          <FormItem className="flex flex-col">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <FormControl>
+                                  <Button
+                                    variant={"outline"}
+                                    className={cn(
+                                      "w-[240px] pl-3 text-left font-normal",
+                                      !field.value && "text-muted-foreground"
+                                    )}
+                                  >
+                                    {field.value ? (
+                                      format(field.value, "PPP")
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                  </Button>
+                                </FormControl>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-auto p-0"
+                                align="start"
+                              >
+                                <Calendar
+                                  mode="single"
+                                  selected={field.value}
+                                  onSelect={field.onChange}
+                                  disabled={(date) =>
+                                    date > new Date() ||
+                                    date > new Date("2024-07-04")
+                                  }
+                                  initialFocus
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <FormLabel>Check out</FormLabel>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </form>
+                  </Form>
+                </div>
+              ) : choice === "Craft" ? (
+                <div className="flex space-x-2">Craft</div>
+              ) : (
+                <div className="flex space-x-2">
+                  <DropComponent
+                    datas={destination}
+                    onSelectedValue={handleDestinationItemSelected}
+                  />
+                </div>
+              )}
               <Button>Search</Button>
             </div>
           </div>
