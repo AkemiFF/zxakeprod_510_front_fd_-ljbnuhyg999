@@ -1,10 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/1ThCvMSnXNF
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -18,9 +11,14 @@ import {
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Undo2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import img1 from "../../../../public/chambre/chambre1.jpeg";
+import img2 from "../../../../public/chambre/chambre2.jpeg";
+import img3 from "../../../../public/chambre/chambre3.webp";
+import img4 from "../../../../public/chambre/chambre4.jpg";
+import img5 from "../../../../public/chambre/chambre5.avif";
 export default function DetailsHebergments() {
   const router = useRouter();
   return (
@@ -62,10 +60,10 @@ export default function DetailsHebergments() {
             className="relative col-span-2 row-span-2 overflow-hidden transition-all after:opacity-0 after:absolute after:inset-0 after:bg-black hover:after:opacity-20 focus:after:opacity-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-xl sm:rounded-l-xl"
             prefetch={false}
           >
-            <img
-              src="/placeholder.svg"
-              width={600}
-              height={600}
+            <Image
+              src={img5}
+              width={1000}
+              height={1000}
               alt="Living room"
               className="object-cover transition-transform aspect-square hover:scale-105"
             />
@@ -75,8 +73,8 @@ export default function DetailsHebergments() {
             className="relative overflow-hidden transition-all after:opacity-0 after:absolute after:inset-0 after:bg-black hover:after:opacity-20 focus:after:opacity-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-tl-xl"
             prefetch={false}
           >
-            <img
-              src="/placeholder.svg"
+            <Image
+              src={img4}
               width={600}
               height={600}
               alt="Living room"
@@ -88,8 +86,8 @@ export default function DetailsHebergments() {
             className="relative overflow-hidden transition-all after:opacity-0 after:absolute after:inset-0 after:bg-black hover:after:opacity-20 focus:after:opacity-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-tr-xl"
             prefetch={false}
           >
-            <img
-              src="/placeholder.svg"
+            <Image
+              src={img3}
               width={600}
               height={600}
               alt="Fireplace"
@@ -101,8 +99,8 @@ export default function DetailsHebergments() {
             className="relative overflow-hidden transition-all after:opacity-0 after:absolute after:inset-0 after:bg-black hover:after:opacity-20 focus:after:opacity-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-bl-xl"
             prefetch={false}
           >
-            <img
-              src="/placeholder.svg"
+            <Image
+              src={img2}
               width={600}
               height={600}
               alt="Bathroom"
@@ -114,8 +112,8 @@ export default function DetailsHebergments() {
             className="relative overflow-hidden transition-all after:opacity-0 after:absolute after:inset-0 after:bg-black hover:after:opacity-20 focus:after:opacity-20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-br-xl"
             prefetch={false}
           >
-            <img
-              src="/placeholder.svg"
+            <Image
+              src={img1}
               width={600}
               height={600}
               alt="Bedroom"
@@ -351,7 +349,7 @@ export default function DetailsHebergments() {
                           variant="outline"
                           className="flex-col items-start w-full h-auto hover:bg-muted"
                         >
-                          <span className />
+                          <p>&</p>
                         </Button>
                       </PopoverTrigger>
                     </Popover>

@@ -16,6 +16,7 @@ import {
 } from "@/components/icons";
 import HeaderAdmin from "@/components/HeaderAdmin";
 import { Spotlight } from "@/components/ui/SpotLight";
+import Link from "next/link";
 
 export default function Component() {
   let value = "bg-accent";
@@ -34,54 +35,63 @@ export default function Component() {
         <HeaderAdmin name="Dashboard" more="Home" links="dashboard" />
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>accommodation</CardTitle>
-                <CardDescription>Registered accommodation</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-4xl font-bold">125</div>
-                  <HotelIcon className="h-8 w-8 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Tour Operator</CardTitle>
-                <CardDescription>Registered Tour Operator</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-4xl font-bold">35</div>
-                  <CompassIcon className="h-8 w-8 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Crafts</CardTitle>
-                <CardDescription>Registered Crafts</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-4xl font-bold">78</div>
-                  <BriefcaseIcon className="h-8 w-8 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Customers</CardTitle>
-                <CardDescription>Registered Customers</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between">
-                  <div className="text-4xl font-bold">2,345</div>
-                  <UsersIcon className="h-8 w-8 text-primary" />
-                </div>
-              </CardContent>
-            </Card>
+            <Link href="/admin/hotel">
+              <Card className="hover:bg-slate-200 transition-all">
+                <CardHeader>
+                  <CardTitle>accommodation</CardTitle>
+                  <CardDescription>Registered accommodation</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-4xl font-bold">125</div>
+                    <HotelIcon className="h-8 w-8 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/admin/operateur">
+              <Card className="hover:bg-slate-200 transition-all">
+                <CardHeader>
+                  <CardTitle>Tour Operator</CardTitle>
+                  <CardDescription>Registered Tour Operator</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-4xl font-bold">35</div>
+                    <CompassIcon className="h-8 w-8 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+
+            <Link href="/admin/craft">
+              <Card className="hover:bg-slate-200 transition-all">
+                <CardHeader>
+                  <CardTitle>Crafts</CardTitle>
+                  <CardDescription>Registered Crafts</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-4xl font-bold">78</div>
+                    <BriefcaseIcon className="h-8 w-8 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+            <Link href="/admin/client">
+              <Card className="hover:bg-slate-200 transition-all">
+                <CardHeader>
+                  <CardTitle>Customers</CardTitle>
+                  <CardDescription>Registered Customers</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex items-center justify-between">
+                    <div className="text-4xl font-bold">2,345</div>
+                    <UsersIcon className="h-8 w-8 text-primary" />
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 ">
             <Card>

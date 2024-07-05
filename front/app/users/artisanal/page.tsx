@@ -5,6 +5,7 @@
  */
 "use client";
 
+import { FilterIcon, StarIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +16,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
-import { Undo2 } from "lucide-react";
+import { ShoppingCartIcon, Undo2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -101,10 +103,10 @@ export default function ArtisanalListe() {
     );
     setFilteredProducts(filtered);
   }, [priceRange, ratingRange, products]);
-  const handlePriceRangeChange = (values) => {
+  const handlePriceRangeChange = (values: any) => {
     setPriceRange(values);
   };
-  const handleRatingRangeChange = (values) => {
+  const handleRatingRangeChange = (values: any) => {
     setRatingRange(values);
   };
   return (
@@ -146,7 +148,7 @@ export default function ArtisanalListe() {
                       min={0}
                       max={100}
                       step={1}
-                      value={[priceRange]}
+                      value={[...priceRange]}
                       onValueChange={handlePriceRangeChange}
                       className="w-full"
                     />
@@ -161,7 +163,7 @@ export default function ArtisanalListe() {
                       min={0}
                       max={5}
                       step={0.1}
-                      value={[ratingRange]}
+                      value={[...ratingRange]}
                       onValueChange={handleRatingRangeChange}
                       className="w-full"
                     />
@@ -188,7 +190,7 @@ export default function ArtisanalListe() {
               <Link href="#" className="absolute inset-0 z-10" prefetch={false}>
                 <span className="sr-only">View</span>
               </Link>
-              <img
+              <Image
                 src="/placeholder.svg"
                 alt={product.name}
                 width={400}
@@ -226,64 +228,5 @@ export default function ArtisanalListe() {
         </div>
       </div>
     </section>
-  );
-}
-
-function FilterIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
-    </svg>
-  );
-}
-
-function ShoppingCartIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="8" cy="21" r="1" />
-      <circle cx="19" cy="21" r="1" />
-      <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
-    </svg>
-  );
-}
-
-function StarIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
   );
 }
