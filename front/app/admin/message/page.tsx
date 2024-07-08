@@ -14,16 +14,17 @@ export default function page() {
   return (
     <div className="flex flex-col w-full min-h-screen bg-muted/40">
       <Navadmin
+        mess={value}
         dash={""}
         hotels={""}
         craft={""}
         tour={""}
         client={""}
-        admin={value}
+        admin={""}
       />
 
       <div className="flex flex-col sm:gap-4 sm:pl-14">
-        <div className="max-lg:hidden max-sm:block">
+        <div className="max-xl:hidden max-sm:block">
           <HeaderAdmin name="Administrator" more="List" links="administrator" />
         </div>
         <ChatInterface />

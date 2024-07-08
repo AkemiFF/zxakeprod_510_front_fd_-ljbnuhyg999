@@ -62,17 +62,17 @@ export default function Component() {
             </CardContent>
             <div className="flex-1 p-8">
               <h2 className="text-2xl font-semibold mb-2 text-center">
-                Login to your account
+                Sign Up to your account
               </h2>
               <p className="text-muted-foreground mb-6 text-center">
-                Welcome back! Please enter your details
+                Welcome ! Please enter your details
               </p>
               <Button
                 variant="outline"
                 className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
               >
                 <Image src={chrome} width={20} height={20} alt="chrome" />
-                <span>Login with Google</span>
+                <span>Sign up with Google</span>
               </Button>
               <div className="flex items-center mb-4">
                 <hr className="flex-1" />
@@ -98,23 +98,23 @@ export default function Component() {
                     className="rounded-none"
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox id="remember" />
-                    <Label htmlFor="remember">Remember me</Label>
-                  </div>
-                  <a href="#" className="text-sm text-muted-foreground">
-                    Forgotten password?
-                  </a>
+                <div>
+                  <Label htmlFor="password">Confirm Password</Label>
+                  <Input
+                    id="password"
+                    placeholder="Confirm your password"
+                    type="password"
+                    className="rounded-none"
+                  />
                 </div>
                 <Button className="w-full rounded-none bg-[#305555]">
                   Login
                 </Button>
               </div>
               <p className="text-center text-sm mt-4">
-                Don t have any account yet?{" "}
-                <Link href="/users/register" className="font-semibold">
-                  Register
+                I have an account{" "}
+                <Link href="/users/login" className="font-semibold">
+                  Login
                 </Link>
               </p>
             </div>

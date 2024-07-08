@@ -10,6 +10,7 @@ export default function Component() {
   return (
     <div className="flex flex-col w-full min-h-screen bg-muted/40">
       <Navadmin
+        mess={""}
         dash={""}
         hotels={value}
         craft={""}

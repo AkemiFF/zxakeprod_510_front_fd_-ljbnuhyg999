@@ -1,13 +1,7 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/AWpyu8pQcOD
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
-
 "use client";
 import { commandListReducer, hebergement, region } from "@/app/type";
 import RegionComponent from "@/components/front/RegionComponent";
-import { HotelIcon } from "@/components/icons";
+import { HotelIcon, StarIcon } from "@/components/icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 
@@ -51,6 +45,9 @@ import {
 } from "@/components/ui/popover";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import HeaderCarous from "@/components/HeaderCarous";
+import UserHeader from "@/components/UserHeader";
+import { DatePick } from "@/components/DatePick";
 
 const regions: region[] = [
   {
@@ -169,7 +166,7 @@ export default function Home() {
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState("");
 
-  const [choice, setChoice] = useState("");
+  const [choice, setChoice] = useState("Accommodation");
   const [accommodationChoice, setAccommodationChoice] = useState("");
   const [destinationChoice, setDestinationChoice] = useState("");
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -204,229 +201,87 @@ export default function Home() {
     setDestinationChoice(selectedValue);
   };
 
-  console.log(choice);
-
   return (
-    <div className="flex flex-col min-h-screen">
-      <header className="flex items-center justify-between p-4 bg-white shadow-md">
-        <div className="flex items-center space-x-4">
-          <HotelIcon className="w-8 h-8" />
-          <span className="text-xl font-bold">HOTELLO</span>
-        </div>
-        <nav className="hidden space-x-4 md:flex">
-          <a href="#" className="text-lg">
-            Home
-          </a>
-          <a href="#" className="text-lg">
-            Discover
-          </a>
-          <a href="#" className="text-lg">
-            Products
-          </a>
-          <a href="#" className="text-lg">
-            Blog
-          </a>
-          <a href="#" className="text-lg">
-            Contact us
-          </a>
-        </nav>
-        <div className="flex space-x-4">
-          <Button>Register</Button>
-        </div>
-      </header>
+    <div className="flex flex-col min-h-screen animate-fadeUp ease-in-out">
+      <UserHeader />
       <main className="flex-1">
         <section className="relative">
-          <Image
-            src="/hotel/luxureHotel.png"
-            alt="Banner"
-            className="w-full h-[400px] object-cover"
-            height={600}
-            width={600}
-          />
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white bg-black bg-opacity-50">
-            <h1 className="text-3xl font-bold">
-              Helping you to find the best comfortable place
-            </h1>
-            <p className="mt-2">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-              explicabo cupiditate laboriosam
-            </p>
-            <div className="flex mt-4 space-x-2">
-              <StarIcon className="w-6 h-6 text-yellow-500" />
-              <StarIcon className="w-6 h-6 text-yellow-500" />
-              <StarIcon className="w-6 h-6 text-yellow-500" />
-              <StarIcon className="w-6 h-6 text-yellow-500" />
-              <StarIcon className="w-6 h-6 text-yellow-500" />
-            </div>
-            <div className="flex mt-8 space-x-2 bg-white p-4 rounded-md shadow-md text-black">
-              <DropComponent
-                datas={element}
-                onSelectedValue={handleItemSelected}
-              />
-              {choice === "Accommodation" ? (
-                <div className="flex space-x-2">
-                  <DropComponent
-                    datas={accommodation}
-                    onSelectedValue={handleAccommodationItemSelected}
-                  />
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="space-y-8"
-                    >
-                      <FormField
-                        control={form.control}
-                        name="dob"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                      "w-[240px] pl-3 text-left font-normal",
-                                      !field.value && "text-muted-foreground"
-                                    )}
-                                  >
-                                    {field.value ? (
-                                      format(field.value, "PPP")
-                                    ) : (
-                                      <span>Pick a date</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent
-                                className="w-auto p-0"
-                                align="start"
-                              >
-                                <Calendar
-                                  mode="single"
-                                  selected={field.value}
-                                  onSelect={field.onChange}
-                                  disabled={(date) => date < new Date()}
-                                  initialFocus
-                                />
-                              </PopoverContent>
-                            </Popover>
-                            <FormLabel>Check in</FormLabel>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </form>
-                  </Form>
-                  <Form {...form2}>
-                    <form
-                      onSubmit={form2.handleSubmit(onSubmit)}
-                      className="space-y-8"
-                    >
-                      <FormField
-                        control={form2.control}
-                        name="dob"
-                        render={({ field }) => (
-                          <FormItem className="flex flex-col">
-                            <Popover>
-                              <PopoverTrigger asChild>
-                                <FormControl>
-                                  <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                      "w-[240px] pl-3 text-left font-normal",
-                                      !field.value && "text-muted-foreground"
-                                    )}
-                                  >
-                                    {field.value ? (
-                                      format(field.value, "PPP")
-                                    ) : (
-                                      <span>Pick a date</span>
-                                    )}
-                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                  </Button>
-                                </FormControl>
-                              </PopoverTrigger>
-                              <PopoverContent
-                                className="w-auto p-0"
-                                align="start"
-                              >
-                                <Calendar
-                                  mode="single"
-                                  selected={field.value}
-                                  onSelect={field.onChange}
-                                  disabled={(date) =>
-                                    date > new Date() ||
-                                    date > new Date("2024-07-04")
-                                  }
-                                  initialFocus
-                                />
-                              </PopoverContent>
-                            </Popover>
-                            <FormLabel>Check out</FormLabel>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </form>
-                  </Form>
-                </div>
-              ) : choice === "Craft" ? (
-                <div className="flex space-x-2">Craft</div>
-              ) : (
-                <div className="flex space-x-2">
-                  <DropComponent
-                    datas={destination}
-                    onSelectedValue={handleDestinationItemSelected}
-                  />
-                </div>
-              )}
-              <Button>Search</Button>
-            </div>
-          </div>
-        </section>
-        <section className="py-12 md:py-20">
-          <div className="container mx-auto px-4 md:px-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">
-              Popular Destinations
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {regions.map((region) => (
-                <RegionComponent
-                  key={region.name}
-                  name={region.name}
-                  imageLink={region.imageLink}
+          {/* crarousel no eto */}
+          <div className="relative">
+            <HeaderCarous />
+
+            <div className="h-full flex items-center justify-center py-7">
+              <div className="absolute top-3/4 flex  mt-8 space-x-2 bg-white p-4 rounded-md shadow-md text-black max-sm:hidden">
+                <DropComponent
+                  datas={element}
+                  onSelectedValue={handleItemSelected}
                 />
-              ))}
+                {choice === "Accommodation" ? (
+                  <div className="flex space-x-2 ">
+                    <DropComponent
+                      datas={accommodation}
+                      onSelectedValue={handleAccommodationItemSelected}
+                    />
+                    <DatePick />
+                  </div>
+                ) : choice === "Craft" ? (
+                  <div className="flex space-x-2">Craft</div>
+                ) : (
+                  <div className="flex space-x-2">
+                    <DropComponent
+                      datas={destination}
+                      onSelectedValue={handleDestinationItemSelected}
+                    />
+                  </div>
+                )}
+                <Button>Search</Button>
+              </div>
             </div>
           </div>
-        </section>
-        <section className="py-12 md:py-20 bg-muted">
-          <div className="container mx-auto px-4 md:px-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-6">
-              Exclusive Hotel Deals
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {exclusiveHotels.map((hotel) => (
-                <ExclusiveHotel
-                  key={hotel.id}
-                  id={hotel.id}
-                  nomHebergement={hotel.nomHebergement}
-                  imageHebergement={hotel.imageHebergement}
-                  adressHebergement={""}
-                  villeHebergement={""}
-                  descriptionsHebergement={hotel.descriptionsHebergement}
-                  nombreEtoileHebergement={0}
-                  latitudeHebergement={0}
-                  longitudeHebergement={0}
-                  responsableHebergement={0}
-                  typeHebergement={""}
-                  dateCreated={""}
-                  dateUpdate={""}
-                />
-              ))}
+          {/* crarousel no eto */}
+          <section className="py-12 md:py-20">
+            <div className="container mx-auto px-4 md:px-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                Popular Destinations
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {regions.map((region) => (
+                  <RegionComponent
+                    key={region.name}
+                    name={region.name}
+                    imageLink={region.imageLink}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          </section>
+          <section className="py-12 md:py-20 bg-muted">
+            <div className="container mx-auto px-4 md:px-8">
+              <h2 className="text-2xl md:text-3xl font-bold mb-6">
+                Exclusive Hotel Deals
+              </h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                {exclusiveHotels.map((hotel) => (
+                  <ExclusiveHotel
+                    key={hotel.id}
+                    id={hotel.id}
+                    nomHebergement={hotel.nomHebergement}
+                    imageHebergement={hotel.imageHebergement}
+                    adressHebergement={""}
+                    villeHebergement={""}
+                    descriptionsHebergement={hotel.descriptionsHebergement}
+                    nombreEtoileHebergement={0}
+                    latitudeHebergement={0}
+                    longitudeHebergement={0}
+                    responsableHebergement={0}
+                    typeHebergement={""}
+                    dateCreated={""}
+                    dateUpdate={""}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
         </section>
         <section className="py-12 md:py-20">
           <div className="container mx-auto px-4 md:px-8">
@@ -543,7 +398,7 @@ export default function Home() {
         </section>
 
         {/* Revue des utilisateurs */}
-        <section className="mt-8">
+        <section className="py-12 md:py-20 mx-10">
           <h2 className="text-2xl font-bold">Get our best services</h2>
           <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-4">
             <Card>
@@ -555,7 +410,7 @@ export default function Home() {
                 className="w-full h-[150px] object-cover"
               />
               <CardContent>
-                <h3 className="text-lg font-bold">Quality</h3>
+                <h3 className="text-lg font-bold mt-5">Quality</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Placeat explicabo cupiditate laboriosam blanditiis recusandae
@@ -572,8 +427,8 @@ export default function Home() {
                 className="w-full h-[150px] object-cover"
               />
               <CardContent>
-                <h3 className="text-lg font-bold">Transparency</h3>
-                <p className="mt-2 text-sm text-muted-foreground">
+                <h3 className="text-lg font-bold mt-5">Transparency</h3>
+                <p className="pt-5 mt-2 text-sm text-muted-foreground">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Placeat explicabo cupiditate laboriosam blanditiis recusandae
                   iste, nesciunt asperiores alias ratione accusantium!
@@ -589,7 +444,7 @@ export default function Home() {
                 className="w-full h-[150px] object-cover"
               />
               <CardContent>
-                <h3 className="text-lg font-bold">Customer experience</h3>
+                <h3 className="text-lg font-bold mt-5">Customer experience</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Placeat explicabo cupiditate laboriosam blanditiis recusandae
@@ -606,7 +461,7 @@ export default function Home() {
                 className="w-full h-[150px] object-cover"
               />
               <CardContent>
-                <h3 className="text-lg font-bold">Support</h3>
+                <h3 className="text-lg font-bold mt-5">Support</h3>
                 <p className="mt-2 text-sm text-muted-foreground">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.
                   Placeat explicabo cupiditate laboriosam blanditiis recusandae
@@ -616,7 +471,7 @@ export default function Home() {
             </Card>
           </div>
         </section>
-        <section className="mt-8">
+        <section className="py-12 md:py-20 mx-10">
           <h2 className="text-2xl font-bold">See the customer’s review</h2>
           <p className="mt-2 text-muted-foreground">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
@@ -625,7 +480,7 @@ export default function Home() {
           <div className="grid gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
             {[...Array(3)].map((_, index) => (
               <Card key={index}>
-                <CardContent>
+                <CardContent className="pt-5">
                   <div className="flex space-x-1">
                     <StarIcon className="w-4 h-4 text-yellow-500" />
                     <StarIcon className="w-4 h-4 text-yellow-500" />
@@ -633,7 +488,7 @@ export default function Home() {
                     <StarIcon className="w-4 h-4 text-yellow-500" />
                     <StarIcon className="w-4 h-4 text-yellow-500" />
                   </div>
-                  <p className="mt-2 text-sm text-muted-foreground">
+                  <p className=" mt-2 text-sm text-muted-foreground">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit.
                     Temporibus corporis sed explicabo, vero dolore esse illo
                     voluptatum animi similique eligendi, consequuntur soluta
@@ -661,37 +516,7 @@ export default function Home() {
             See more
           </Button>
         </section>
-        <section className="mt-8">
-          <h2 className="text-2xl font-bold">Subscribe to our newsletter</h2>
-          <p className="mt-2 text-muted-foreground">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-            explicabo cupiditate laboriosam blanditiis recusandae iste
-          </p>
-          <div className="flex mt-4 space-x-2">
-            <Input placeholder="Your email address" className="w-full" />
-            <Button>Submit</Button>
-          </div>
-        </section>
       </main>
     </div>
-  );
-}
-
-function StarIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-    </svg>
   );
 }

@@ -19,10 +19,12 @@ import img2 from "../../../../public/chambre/chambre2.jpeg";
 import img3 from "../../../../public/chambre/chambre3.webp";
 import img4 from "../../../../public/chambre/chambre4.jpg";
 import img5 from "../../../../public/chambre/chambre5.avif";
+import { Spotlight } from "@/components/ui/SpotLight";
 export default function DetailsHebergments() {
   const router = useRouter();
   return (
     <div className="max-w-6xl p-4 mx-auto lg:px-6 sm:py-8 md:py-10">
+      <Spotlight fill="#5B876B" className="absolute top-0" />
       <Undo2 className="cursor-pointer mb-5 " onClick={() => router.back()} />
       <section className="flex-col hidden gap-4 pb-4 sm:flex sm:flex-row sm:items-center sm:pb-8">
         <h1 className="text-xl font-semibold tracking-tight lg:text-3xl">

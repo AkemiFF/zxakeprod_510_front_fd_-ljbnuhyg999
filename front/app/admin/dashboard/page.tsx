@@ -23,6 +23,7 @@ export default function Component() {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Navadmin
+        mess={""}
         dash={value}
         hotels={""}
         craft={""}

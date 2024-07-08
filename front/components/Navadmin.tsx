@@ -29,6 +29,7 @@ interface navigation {
   craft: String;
   tour: String;
   client: String;
+  mess: String;
   admin: String;
 }
 
@@ -65,7 +66,10 @@ const Navadmin = (nav: navigation) => {
             <TooltipTrigger asChild>
               <Link
                 href="/admin/message"
-                className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
+                className={
+                  "flex h-9 w-9 items-center justify-center rounded-lg  text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 " +
+                  nav.mess
+                }
                 prefetch={false}
               >
                 <div className="relative inline-block">

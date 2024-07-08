@@ -15,6 +15,7 @@ export default function page() {
     <div className="flex flex-col w-full min-h-screen bg-muted/40">
       <Spotlight fill="#5B876B" className="absolute top-0" />
       <Navadmin
+        mess={""}
         dash={""}
         hotels={""}
         craft={""}
