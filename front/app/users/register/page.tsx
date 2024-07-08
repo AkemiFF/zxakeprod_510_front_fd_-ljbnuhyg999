@@ -80,15 +80,23 @@ export default function Component() {
                   setTimeout(resolve, 2000)
                 );
 
-                const api = fetch("http://192.168.88.56:8000/", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ email, password }),
-                });
+                const api = fetch(
+                  "http://192.168.88.56:8000/api/get-csrf-token/",
+                  {
+                    method: "get",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    // body: JSON.stringify({ email, password }),
+                  }
+                );
                 const data = (await api).json();
-
+                console.log(
+                  data.then((data) => {
+                    console.log(JSON.stringify(data, null, 1));
+                    data.headers["set-cookie"][0];
+                  })
+                );
                 toast.promise(
                   api,
                   {
