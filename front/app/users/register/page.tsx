@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
-
+import { getCsrfToken } from '../../../lib/csrf';
 import { Card, CardContent } from "@/components/ui/card";
 import chrome from "../../../public/chercher.png";
 import Schema1 from "../../../public/asset-login/Beautiful hotel insights details.png";
@@ -79,24 +79,29 @@ export default function Component() {
                 const resolveAfter3Sec = new Promise((resolve) =>
                   setTimeout(resolve, 2000)
                 );
-
+                getCsrfToken()
                 const api = fetch(
-                  "http://192.168.88.56:8000/api/get-csrf-token/",
+                  "http://192.168.88.119:8000/api/get-csrf-token/"
+                  ,
                   {
                     method: "get",
                     headers: {
                       "Content-Type": "application/json",
                     },
+
+
                     // body: JSON.stringify({ email, password }),
                   }
                 );
-                const data = (await api).json();
-                console.log(
-                  data.then((data) => {
-                    console.log(JSON.stringify(data, null, 1));
-                    data.headers["set-cookie"][0];
-                  })
-                );
+
+
+                // const data = (await api).json();
+
+                // console.log(
+                //   data.then((data) => {
+                //     console.log(JSON.stringify(data, null, 1));
+                //   })
+                // );
                 toast.promise(
                   api,
                   {

@@ -5,7 +5,7 @@
  */
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -43,6 +43,7 @@ import {
 } from "./ui/pagination";
 import Link from "next/link";
 import Authorisation from "./Authorisation";
+import { Console, log } from "console";
 
 export default function ListClient() {
   const [search, setSearch] = useState("");
@@ -50,6 +51,9 @@ export default function ListClient() {
     name: "",
     last: "",
   });
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const handleSearch = (e: any) => {
     setSearch(e.target.value);
   };
@@ -59,46 +63,40 @@ export default function ListClient() {
       //   [field]: value,
     }));
   };
+
+  useEffect(() => {
+    fetch('http://127.0.0.1:8000/api/info/clients/')
+      .then(response => response.json())
+      .then(data => {
+        setClients(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching client data:', error);
+        setLoading(false);
+      });
+  }, []);
+
   const filteredData = useMemo(() => {
-    //ici on fait le fetch
-    return [
-      {
-        name: "John ",
-        last: "Rabenarivo",
-        email: "john.doe@acmetravel.com",
-        phone: "+1 (555) 555-5555",
-      },
-      {
-        name: "Jenny ",
-        last: "Rakotohasimbola",
-        email: "jane.smith@globetrottertours.com",
-        phone: "+1 (555) 555-5556",
-      },
-      {
-        name: "Michael ",
-        last: "Johnson",
-        email: "michael.johnson@adventureseekers.com",
-        phone: "+1 (555) 555-5557",
-      },
-      {
-        name: "Emily ",
-        last: "Davis",
-        email: "emily.davis@wanderlustexpeditions.com",
-        phone: "+1 (555) 555-5558",
-      },
-      {
-        name: "David ",
-        last: "Lee",
-        email: "david.lee@horizonvacations.com",
-        phone: "+1 (555) 555-5559",
-      },
-    ].filter((item) => {
+
+    const data = clients.map(client => {
+      return {
+        name: " client.username",
+        last: "client.first_name",
+        email: "client.email",
+        phone: "client.numero_client",
+      };
+    });
+
+    return data.filter((item) => {
       return (
         item.name.toLowerCase().includes(filters.name.toLowerCase()) &&
         item.last.toLowerCase().includes(filters.last.toLowerCase())
       );
     });
   }, [filters]);
+
+
   return (
     <Card>
       <CardHeader className="bg-primary mb-10 rounded-t-md text-white">
