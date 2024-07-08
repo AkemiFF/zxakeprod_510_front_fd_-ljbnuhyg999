@@ -100,10 +100,6 @@ export default function Component() {
                 //   }
                 // );
 
-                // const email = ""; // Replace with the real email
-                // const password = ""; // Replace with the real password
-
-
                 const api = fetch("http://127.0.0.1:8000/api/accounts/client/create/", {
                   method: "post",
                   headers: {
@@ -226,3 +222,5 @@ export default function Component() {
     </>
   );
 }
+
+
