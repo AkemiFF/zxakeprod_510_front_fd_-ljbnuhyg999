@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
-import { getCsrfToken } from '../../../lib/csrf';
+
 import { Card, CardContent } from "@/components/ui/card";
 import chrome from "../../../public/chercher.png";
 import Schema1 from "../../../public/asset-login/Beautiful hotel insights details.png";
@@ -73,35 +73,68 @@ export default function Component() {
               className="flex-1 p-8"
               onSubmit={async (e) => {
                 e.preventDefault();
-                console.log(email);
-                console.log(password);
-                console.log(password1);
+                // console.log(email);
+                // console.log(password);
+                // console.log(password1);
                 const resolveAfter3Sec = new Promise((resolve) =>
                   setTimeout(resolve, 2000)
                 );
-                getCsrfToken()
-                const api = fetch(
-                  "http://192.168.88.119:8000/api/get-csrf-token/"
-                  ,
-                  {
-                    method: "get",
-                    headers: {
-                      "Content-Type": "application/json",
-                    },
 
+                // Valider que les deux mots de passe correspondent
+                if (password !== password1) {
+                  toast.error("Les mots de passe ne correspondent pas", {
+                    autoClose: 3000,
+                  });
+                  return;
+                }
 
-                    // body: JSON.stringify({ email, password }),
-                  }
-                );
-
-
-                // const data = (await api).json();
-
-                // console.log(
-                //   data.then((data) => {
-                //     console.log(JSON.stringify(data, null, 1));
-                //   })
+                // TEST
+                // const api = fetch(
+                //   "http://192.168.88.56:8000/api/get-csrf-token/",
+                //   {
+                //     method: "get",
+                //     headers: {
+                //       "Content-Type": "application/json",
+                //     },
+                //     // body: JSON.stringify({ email, password }),
+                //   }
                 // );
+
+                // const email = ""; // Replace with the real email
+                // const password = ""; // Replace with the real password
+
+
+                const api = fetch("http://127.0.0.1:8000/api/accounts/client/create/", {
+                  method: "post",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ email: email, password: password }),
+                });
+
+
+                api.then(response => {
+                  if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                  }
+                  return response.json();
+                })
+                  .then(data => {
+                    console.log(data);
+                  })
+                  .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                  });
+
+
+
+                const data = (await api).json();
+                console.log(
+                  data.then((data) => {
+                    console.log(JSON.stringify(data, null, 1));
+                    data.headers["set-cookie"][0];
+                  })
+                );
                 toast.promise(
                   api,
                   {
@@ -111,7 +144,8 @@ export default function Component() {
                   },
                   { autoClose: 2000 }
                 );
-              }}
+              }
+              }
             >
               <h2 className="text-2xl font-semibold mb-2 text-center">
                 Sign Up to your account
