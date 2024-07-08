@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
@@ -13,9 +14,15 @@ import Schema3 from "../../../public/asset-login/Hand pressing receptionist's be
 import Schema4 from "../../../public/asset-login/Hotel lobby.png";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function Component() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   return (
     <>
+      <ToastContainer position="bottom-right" />
       <UserHeader />
       <div className="  flex flex-col items-center">
         <div className="px-10">
@@ -60,7 +67,27 @@ export default function Component() {
                 nesciunt asperiores alias ratione.
               </p>
             </CardContent>
-            <div className="flex-1 p-8">
+            <form
+              className="flex-1 p-8"
+              onSubmit={(e) => {
+                e.preventDefault();
+                console.log(email);
+                console.log(password);
+
+                const resolveAfter3Sec = new Promise((resolve) =>
+                  setTimeout(resolve, 2000)
+                );
+                toast.promise(
+                  resolveAfter3Sec,
+                  {
+                    pending: "Connexion au serveur",
+                    success: "Connexion reussite",
+                    error: "Erreur de l'inscription",
+                  },
+                  { autoClose: 2000 }
+                );
+              }}
+            >
               <h2 className="text-2xl font-semibold mb-2 text-center">
                 Login to your account
               </h2>
@@ -69,6 +96,7 @@ export default function Component() {
               </p>
               <Button
                 variant="outline"
+                type="button"
                 className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
               >
                 <Image src={chrome} width={20} height={20} alt="chrome" />
@@ -86,7 +114,11 @@ export default function Component() {
                     id="email"
                     placeholder="Enter your email"
                     type="email"
+                    required
                     className="rounded-none"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                   />
                 </div>
                 <div>
@@ -95,7 +127,11 @@ export default function Component() {
                     id="password"
                     placeholder="Enter your password"
                     type="password"
+                    required
                     className="rounded-none"
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -107,7 +143,10 @@ export default function Component() {
                     Forgotten password?
                   </a>
                 </div>
-                <Button className="w-full rounded-none bg-[#305555]">
+                <Button
+                  className="w-full rounded-none bg-[#305555]"
+                  type="submit"
+                >
                   Login
                 </Button>
               </div>
@@ -117,7 +156,7 @@ export default function Component() {
                   Register
                 </Link>
               </p>
-            </div>
+            </form>
           </Card>
         </div>
       </div>

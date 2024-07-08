@@ -28,6 +28,7 @@ import art1 from "../../../public/artisanat/artisanat1.jpg";
 import art2 from "../../../public/artisanat/artisanat2.webp";
 import art3 from "../../../public/artisanat/artisanat3.jpeg";
 import art4 from "../../../public/artisanat/artisanat4.jpg";
+import FooterUser from "@/components/FooterUser";
 export default function ArtisanalListe() {
   const router = useRouter();
   const [products, setProducts] = useState([
@@ -234,6 +235,7 @@ export default function ArtisanalListe() {
           </div>
         </div>
       </section>
+      <FooterUser />
     </>
   );
 }

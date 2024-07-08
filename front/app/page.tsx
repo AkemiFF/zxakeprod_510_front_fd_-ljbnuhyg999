@@ -24,30 +24,14 @@ import hotel3 from "../public/hotel/hotel3.jpg";
 import hotel1 from "../public/hotel/hotel4.jpg";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarIcon } from "@radix-ui/react-icons";
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { toast } from "@/components/ui/use-toast";
-import { cn } from "@/lib/utils";
 import HeaderCarous from "@/components/HeaderCarous";
 import UserHeader from "@/components/UserHeader";
 import { DatePick } from "@/components/DatePick";
+import FooterUser from "@/components/FooterUser";
 
 const regions: region[] = [
   {
@@ -176,17 +160,6 @@ export default function Home() {
     resolver: zodResolver(FormSchema),
   });
   console.log(form, form2);
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
 
   const handleAccommodationItemSelected = (selectedValue: string) => {
     console.log("Selected item:", selectedValue);
@@ -517,6 +490,7 @@ export default function Home() {
           </Button>
         </section>
       </main>
+      <FooterUser />
     </div>
   );
 }

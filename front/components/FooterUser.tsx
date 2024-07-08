@@ -3,7 +3,31 @@ import facebook from "../public/facebook.png";
 import insta from "../public/instagram.png";
 import twitter from "../public/twitter.png";
 import Image from "next/image";
+import { AnimatedTooltip } from "./ui/animated-tooltip";
 const FooterUser = () => {
+  let Contact = [
+    {
+      id: 1,
+      name: "Aftrip Facebook",
+      links: "www.facebook.com",
+      designation: "Facebook Contact",
+      image: facebook.src,
+    },
+    {
+      id: 2,
+      name: "Aftrip Instagram",
+      links: "www.instagram.com",
+      designation: "Insta Contact",
+      image: insta.src,
+    },
+    {
+      id: 3,
+      name: "Aftrip Twitter",
+      links: "www.twitter.com",
+      designation: "twitter Contact",
+      image: twitter.src,
+    },
+  ];
   return (
     <footer className="w-full bg-primary py-8 mt-10">
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
@@ -61,7 +85,8 @@ const FooterUser = () => {
             Social media
           </h4>
           <nav className="flex space-x-4 py-5">
-            <a href="#" className="text-muted-foreground">
+            <AnimatedTooltip items={Contact} />
+            {/* <a href="#" className="text-muted-foreground">
               <Image src={facebook} width={30} height={30} alt={""} />
             </a>
             <a href="#" className="text-muted-foreground">
@@ -69,7 +94,7 @@ const FooterUser = () => {
             </a>
             <a href="#" className="text-muted-foreground">
               <Image src={twitter} width={30} height={30} alt="" />
-            </a>
+            </a> */}
           </nav>
         </div>
       </div>

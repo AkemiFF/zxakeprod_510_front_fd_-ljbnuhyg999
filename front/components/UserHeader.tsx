@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
@@ -6,7 +7,18 @@ import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import hotello from "../public/hotello.png";
 import { HotelIcon, MenuIcon } from "@/components/icons";
 import Link from "next/link";
+import user from "../app/favicon.ico";
+import {
+  DropdownMenuSeparator,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Avatar } from "./ui/avatar";
 const UserHeader = () => {
+  const [connected, setconnected] = useState(false);
   return (
     <div>
       <header className="w-full bg-primary py-4">
@@ -102,18 +114,52 @@ const UserHeader = () => {
               About us
             </Link>
           </nav>
-          <div className="flex space-x-4 max-sm:hidden">
-            <Link href="/users/login">
-              <Button className="bg-white text-black hover:text-white">
-                Login
-              </Button>
-            </Link>
-            <Link href="/users/register">
-              <Button className="bg-[#305555] hover:bg-[#305555] hover:opacity-80">
-                Register
-              </Button>
-            </Link>
-          </div>
+          {!connected && (
+            <div className="flex space-x-4 max-sm:hidden">
+              <Link href="/users/login">
+                <Button className="bg-white text-black hover:text-white">
+                  Login
+                </Button>
+              </Link>
+              <Link href="/users/register">
+                <Button className="bg-[#305555] hover:bg-[#305555] hover:opacity-80">
+                  Register
+                </Button>
+              </Link>
+            </div>
+          )}
+          {connected && (
+            <div className="flex mr-5">
+              <div className="flex gap-5">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className=" rounded-full"
+                    >
+                      <Image
+                        src={user}
+                        width={36}
+                        height={36}
+                        alt="Avatar"
+                        className="overflow-hidden rounded-full"
+                      />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Cart</DropdownMenuItem>
+                    <DropdownMenuItem>Setting</DropdownMenuItem>
+                    <DropdownMenuItem>Support</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          )}
         </div>
       </header>
     </div>

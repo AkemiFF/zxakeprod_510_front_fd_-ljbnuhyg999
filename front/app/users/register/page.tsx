@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
@@ -13,9 +14,17 @@ import Schema3 from "../../../public/asset-login/Hand pressing receptionist's be
 import Schema4 from "../../../public/asset-login/Hotel lobby.png";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
+import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export default function Component() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [password1, setPassword1] = useState("");
   return (
     <>
+      <ToastContainer position="bottom-right" />
       <UserHeader />
       <div className="  flex flex-col items-center">
         <div className="px-10">
@@ -60,7 +69,37 @@ export default function Component() {
                 nesciunt asperiores alias ratione.
               </p>
             </CardContent>
-            <div className="flex-1 p-8">
+            <form
+              className="flex-1 p-8"
+              onSubmit={async (e) => {
+                e.preventDefault();
+                console.log(email);
+                console.log(password);
+                console.log(password1);
+                const resolveAfter3Sec = new Promise((resolve) =>
+                  setTimeout(resolve, 2000)
+                );
+
+                const api = fetch("http://192.168.88.56:8000/", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ email, password }),
+                });
+                const data = (await api).json();
+
+                toast.promise(
+                  api,
+                  {
+                    pending: "Connexion au serveur",
+                    success: "Inscription reussite",
+                    error: "erreur de Connexion",
+                  },
+                  { autoClose: 2000 }
+                );
+              }}
+            >
               <h2 className="text-2xl font-semibold mb-2 text-center">
                 Sign Up to your account
               </h2>
@@ -69,6 +108,7 @@ export default function Component() {
               </p>
               <Button
                 variant="outline"
+                type="button"
                 className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
               >
                 <Image src={chrome} width={20} height={20} alt="chrome" />
@@ -86,6 +126,10 @@ export default function Component() {
                     id="email"
                     placeholder="Enter your email"
                     type="email"
+                    required
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                    }}
                     className="rounded-none"
                   />
                 </div>
@@ -95,20 +139,31 @@ export default function Component() {
                     id="password"
                     placeholder="Enter your password"
                     type="password"
+                    required
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
                     className="rounded-none"
                   />
                 </div>
                 <div>
                   <Label htmlFor="password">Confirm Password</Label>
                   <Input
-                    id="password"
+                    id="password1"
                     placeholder="Confirm your password"
                     type="password"
+                    required
+                    onChange={(e) => {
+                      setPassword1(e.target.value);
+                    }}
                     className="rounded-none"
                   />
                 </div>
-                <Button className="w-full rounded-none bg-[#305555]">
-                  Login
+                <Button
+                  className="w-full rounded-none bg-[#305555]"
+                  type="submit"
+                >
+                  Register
                 </Button>
               </div>
               <p className="text-center text-sm mt-4">
@@ -117,7 +172,7 @@ export default function Component() {
                   Login
                 </Link>
               </p>
-            </div>
+            </form>
           </Card>
         </div>
       </div>
