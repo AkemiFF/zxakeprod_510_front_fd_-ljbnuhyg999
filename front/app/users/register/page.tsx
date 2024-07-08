@@ -80,7 +80,6 @@ export default function Component() {
                   setTimeout(resolve, 2000)
                 );
 
-                // Valider que les deux mots de passe correspondent
                 if (password !== password1) {
                   toast.error("Les mots de passe ne correspondent pas", {
                     autoClose: 3000,
@@ -108,21 +107,29 @@ export default function Component() {
                   body: JSON.stringify({ email: email, password: password }),
                 });
 
-
-                api.then(response => {
+                api.then(async (response) => {
                   if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
+                    const errorData = await response.json();
+                    if (errorData.email) {
+                      toast.error(errorData.email[0], {
+                        autoClose: 5000,
+                      });
+                    }
+                    if (errorData.password) {
+                      toast.error(errorData.password[0], {
+                        autoClose: 5000,
+                      });
+                    }
+                    // throw new Error('API error: ' + JSON.stringify(errorData));
                   }
                   return response.json();
                 })
-                  .then(data => {
-                    console.log(data);
-                  })
-                  .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                  });
-
-
+                // .catch(error => {
+                //   console.error('There was a problem with the fetch operation:', error);
+                //   toast.error("Une erreur s'est produite lors de l'inscription: " + error.message, {
+                //     autoClose: 5000,
+                //   });
+                // });
 
                 const data = (await api).json();
                 console.log(

@@ -69,7 +69,7 @@ export default function Component() {
             </CardContent>
             <form
               className="flex-1 p-8"
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 console.log(email);
                 console.log(password);
@@ -77,6 +77,18 @@ export default function Component() {
                 const resolveAfter3Sec = new Promise((resolve) =>
                   setTimeout(resolve, 2000)
                 );
+
+                // Daniel 08/07/24
+                // const response = await fetch("http://127.0.0.1:8000/api/accounts/client/login/", {
+                //   method: "POST",
+                //   headers: {
+                //     "Content-Type": "application/json",
+                //   },
+                //   body: JSON.stringify({ email, password }),
+                // });
+                // const data = await response.json();
+                // console.log(data);
+
                 toast.promise(
                   resolveAfter3Sec,
                   {
