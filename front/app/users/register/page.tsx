@@ -19,6 +19,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie'
 import { getCsrfFromToken, getCsrfToken } from "@/lib/csrf";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
+import { SessionProvider } from 'next-auth/react';
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -107,7 +109,7 @@ export default function Component() {
                     console.log("Client created:", data);
                     return data;
                   } catch (error) {
-                    console.error("Error creating client:", error.message);
+                    // console.error("Error creating client:", error.message);
                     throw error;
                   }
                 };
@@ -157,7 +159,11 @@ export default function Component() {
                 className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
               >
                 <Image src={chrome} width={20} height={20} alt="chrome" />
-                <span>Sign up with Google</span>
+                {/* <span>Sign up with Google</span> */}
+                <SessionProvider>
+                  <GoogleLoginButton />
+                </SessionProvider>
+
               </Button>
               <div className="flex items-center mb-4">
                 <hr className="flex-1" />
