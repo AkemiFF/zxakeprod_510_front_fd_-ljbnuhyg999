@@ -66,7 +66,7 @@ const UserHeader = () => {
                       Tour
                     </Link>
                     <Link
-                      href="#"
+                      href="/users/about"
                       className="text-lg font-medium hover:decoration-stone-600"
                     >
                       About us
@@ -108,7 +108,7 @@ const UserHeader = () => {
               Tour
             </Link>
             <Link
-              href="#"
+              href="/users/about"
               className="text-lg md:text-sm lg:text-lg font-medium hover:opacity-50 text-white"
             >
               About us
