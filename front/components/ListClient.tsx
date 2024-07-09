@@ -4,7 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 "use client";
-
+import config from "../lib/config";
 import { useState, useMemo, useEffect } from "react";
 import {
   Card,
@@ -45,30 +45,38 @@ import Link from "next/link";
 import Authorisation from "./Authorisation";
 import { Console, log } from "console";
 
+interface Client {
+  username: string;
+  first_name: string;
+  email: string;
+  numero_client: string;
+}
+
 export default function ListClient() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
     name: "",
     last: "",
   });
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-  const handleFilterChange = (field: String, value: String) => {
+
+  const handleFilterChange = (field: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      //   [field]: value,
+      [field]: value,
     }));
   };
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/info/clients/')
+    fetch(`${config.apiBaseUrl}/api/info/clients/`)
       .then(response => response.json())
       .then(data => {
-        setClients(data);
+        setClients(data); // Assurez-vous que les données renvoyées sont bien typées comme Client[]
         setLoading(false);
       })
       .catch(error => {
@@ -78,23 +86,13 @@ export default function ListClient() {
   }, []);
 
   const filteredData = useMemo(() => {
-
-    const data = clients.map(client => {
-      return {
-        name: " client.username",
-        last: "client.first_name",
-        email: "client.email",
-        phone: "client.numero_client",
-      };
+    return clients.filter(client => {
+      console.log(client)
+      const nameMatches = client.username && client.username.toLowerCase().includes(filters.name.toLowerCase());
+      const lastMatches = client.first_name && client.first_name.toLowerCase().includes(filters.last.toLowerCase());
+      return nameMatches && lastMatches;
     });
-
-    return data.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(filters.name.toLowerCase()) &&
-        item.last.toLowerCase().includes(filters.last.toLowerCase())
-      );
-    });
-  }, [filters]);
+  }, [clients, filters]);
 
 
   return (
@@ -179,17 +177,13 @@ export default function ListClient() {
           <TableBody>
             {filteredData.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.last}</TableCell>
-                <TableCell className="max-sm:hidden max-md:hidden">
-                  {item.email}
-                </TableCell>
-                <TableCell className="max-sm:hidden">{item.phone}</TableCell>
-                <TableCell className=" flex items-center justify-center gap-10">
+                <TableCell>{item.username}</TableCell>
+                <TableCell>{item.first_name}</TableCell>
+                <TableCell className="max-sm:hidden max-md:hidden">{item.email}</TableCell>
+                <TableCell className="max-sm:hidden">{item.numero_client}</TableCell>
+                <TableCell className="flex items-center justify-center gap-10">
                   <Authorisation />
-                  <Button className="bg-red-700 hover:bg-red-500">
-                    Blocked
-                  </Button>
+                  <Button className="bg-red-700 hover:bg-red-500">Blocked</Button>
                 </TableCell>
               </TableRow>
             ))}
