@@ -1,4 +1,4 @@
-import { useSession, signIn } from 'next-auth/react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function GoogleLoginButton() {
     const { data: session } = useSession();
@@ -7,16 +7,16 @@ export default function GoogleLoginButton() {
         signIn('google');
     };
 
-    function handleLogout(): void {
-        throw new Error('Function not implemented.');
-    }
+    const handleLogout = () => {
+        signOut();
+    };
 
     return (
         <div>
             {session ? (
                 <button onClick={handleLogout}>Logout</button>
             ) : (
-                <button onClick={handleLogin}>Login with Google</button>
+                <button onClick={handleLogin}>Sign Up with Google</button>
             )}
         </div>
     );

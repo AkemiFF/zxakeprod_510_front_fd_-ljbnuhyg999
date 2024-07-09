@@ -36,7 +36,7 @@ export const getCsrfFromToken = async () => {
         // console.log("CSRF token set:", data);
         return data.csrfToken;
     } catch (error) {
-        console.error("Error fetching CSRF token:", error.message);
+        // console.error("Error fetching CSRF token:", error.message);
         throw error;
     }
 };
