@@ -28,7 +28,7 @@ const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -57,16 +57,15 @@ export default function Component() {
         return;
       }
 
-      // Successful login
       setCookieWithExpiry("csrfToken", csrfToken, 5);
       setCookieWithExpiry("access", data.access, 5);
       Cookies.set("refresh", data.refresh, { expires: 1 });
 
       toast.success("Connexion réussie", { autoClose: 2000 });
-      setIsLoggedIn(true); // Update login state
+      setIsLoggedIn(true);
 
       // Redirection vers la page d'accueil après une connexion réussie
-      Router.push("/users/register"); // Use Next.js Router for navigation
+      window.location.href = "/";
     } catch (error) {
       toast.error("Erreur de connexion", { autoClose: 2000 });
     }
