@@ -28,7 +28,7 @@ export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e: any) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
@@ -45,14 +45,15 @@ export default function Component() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (data.non_field_errors) {
-          toast.error(data.non_field_errors[0], { autoClose: 5000 });
-        }
-        if (data.email) {
-          toast.error(data.email[0], { autoClose: 5000 });
-        }
-        if (data.password) {
-          toast.error(data.password[0], { autoClose: 5000 });
+        if (response.status === 404) {
+          // 404 status indicates email not found
+          toast.error("Email incorrect ou n'existe pas", { autoClose: 5000 });
+        } else if (response.status === 401) {
+          // 401 status indicates invalid password
+          toast.error("Mot de passe incorrect", { autoClose: 5000 });
+        } else {
+          // Handle other errors
+          toast.error("Erreur de connexion", { autoClose: 5000 });
         }
         return;
       }
@@ -63,10 +64,8 @@ export default function Component() {
       Cookies.set("refresh", data.refresh, { expires: 1 });
 
       toast.success("Connexion réussie", { autoClose: 2000 });
-      // console.log("User logged in:", data);
 
     } catch (error) {
-      console.error("Error logging in:", error.message);
       toast.error("Erreur de connexion", { autoClose: 2000 });
     }
   };
