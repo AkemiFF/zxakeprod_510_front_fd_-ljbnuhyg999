@@ -1,6 +1,5 @@
-// lib/auth.ts (Côté serveur)
+// lib/auth.ts
 import { NextAuthOptions, getServerSession } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { redirect } from "next/navigation";
 
@@ -11,9 +10,11 @@ export const authConfig: NextAuthOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
         }),
     ],
-};
+    secret: process.env.NEXTAUTH_SECRET,
 
+};
+console.log(process.env.GOOGLE_CLIENT_ID as string);
 export async function loginEstRequisServeur() {
     const session = await getServerSession(authConfig);
-    if (!session) redirect("/");
+    if (!session) return redirect("/");
 }
