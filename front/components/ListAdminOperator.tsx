@@ -84,13 +84,13 @@ export default function ListAdminOperator() {
       });
   }, []);
 
-  const filteredData = useMemo(() => {
-    return operators.filter(operator => {
-      const nameMatches = operator.first_name.toLowerCase().includes(filters.name.toLowerCase());
-      const lastMatches = operator.last_name.toLowerCase().includes(filters.last.toLowerCase());
-      return nameMatches && lastMatches;
-    });
-  }, [operators, filters]);
+  // const filteredData = useMemo(() => {
+  //   return operators.filter(operator => {
+  //     const nameMatches = operator.first_name.toLowerCase().includes(filters.name.toLowerCase());
+  //     const lastMatches = operator.last_name.toLowerCase().includes(filters.last.toLowerCase());
+  //     return nameMatches && lastMatches;
+  //   });
+  // }, [operators, filters]);
 
   return (
     <Card>
@@ -172,7 +172,7 @@ export default function ListAdminOperator() {
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
+          {/* <TableBody>
             {filteredData.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.first_name}</TableCell>
@@ -186,7 +186,7 @@ export default function ListAdminOperator() {
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody>
+          </TableBody> */}
         </Table>
         <div className="flex items-center justify-center mt-8">
           <Pagination>
