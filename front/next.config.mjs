@@ -1,6 +1,9 @@
 // @type {import('next').NextConfig} 
 // const nextConfig = {};
 // export default nextConfig;
+import dotenv from 'dotenv';
+dotenv.config();
+
 const config = {
     env: {
         GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
