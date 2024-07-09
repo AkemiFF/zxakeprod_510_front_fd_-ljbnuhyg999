@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import config from "../../../lib/config";
 import { getCsrfFromToken } from "@/lib/csrf";
+import Router from "next/router";
 
 const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
   Cookies.set(name, value, { expires: (1 / 24 / 60) * minutes });
@@ -27,6 +28,7 @@ const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -45,28 +47,27 @@ export default function Component() {
       const data = await response.json();
 
       if (!response.ok) {
-        if (data.non_field_errors) {
-          toast.error(data.non_field_errors[0], { autoClose: 5000 });
-        }
-        if (data.email) {
-          toast.error(data.email[0], { autoClose: 5000 });
-        }
-        if (data.password) {
-          toast.error(data.password[0], { autoClose: 5000 });
+        if (response.status === 404) {
+          toast.error("Email incorrect ou n'existe pas", { autoClose: 5000 });
+        } else if (response.status === 401) {
+          toast.error("Mot de passe incorrect", { autoClose: 5000 });
+        } else {
+          toast.error("Erreur de connexion", { autoClose: 5000 });
         }
         return;
       }
 
-      // Stocker le token dans les cookies
+      // Successful login
       setCookieWithExpiry("csrfToken", csrfToken, 5);
       setCookieWithExpiry("access", data.access, 5);
       Cookies.set("refresh", data.refresh, { expires: 1 });
 
       toast.success("Connexion réussie", { autoClose: 2000 });
-      // console.log("User logged in:", data);
+      setIsLoggedIn(true); // Update login state
 
+      // Redirection vers la page d'accueil après une connexion réussie
+      Router.push("/users/register"); // Use Next.js Router for navigation
     } catch (error) {
-      console.error("Error logging in:", error.message);
       toast.error("Erreur de connexion", { autoClose: 2000 });
     }
   };
