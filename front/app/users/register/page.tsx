@@ -99,7 +99,7 @@ export default function Component() {
                 //   }
                 // );
 
-                const api = fetch("http://127.0.0.1:8000/api/accounts/client/create/", {
+                const api = fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}endpoint`, {
                   method: "post",
                   headers: {
                     "Content-Type": "application/json",

@@ -15,6 +15,7 @@ export default function page() {
         tour={value}
         client={""}
         admin={""}
+        mess={""}
       />
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <HeaderAdmin name="Tour operator" more="more" links="operateur" />
