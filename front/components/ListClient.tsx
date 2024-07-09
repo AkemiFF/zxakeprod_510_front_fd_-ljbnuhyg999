@@ -4,7 +4,7 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 "use client";
-import config from "../lib/config";
+import Urlconfig from "../lib/config";
 import { useState, useMemo, useEffect } from "react";
 import {
   Card,
@@ -73,7 +73,7 @@ export default function ListClient() {
   };
 
   useEffect(() => {
-    fetch(`${config.apiBaseUrl}/api/info/clients/`)
+    fetch(`${Urlconfig.apiBaseUrl}/api/info/clients/`)
       .then(response => response.json())
       .then(data => {
         setClients(data); // Assurez-vous que les données renvoyées sont bien typées comme Client[]
