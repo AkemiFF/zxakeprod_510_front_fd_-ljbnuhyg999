@@ -144,7 +144,7 @@ export default function Component() {
                 </Button>
               </div>
               <p className="text-center text-sm mt-4">
-                Don't have any account yet?{" "}
+                Don t have any account yet?{" "}
                 <Link href="/users/register" className="font-semibold">
                   Register
                 </Link>
