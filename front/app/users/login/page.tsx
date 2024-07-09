@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import config from "../../../lib/config";
 import { getCsrfFromToken } from "@/lib/csrf";
+import Router from "next/router";
 
 const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
   Cookies.set(name, value, { expires: (1 / 24 / 60) * minutes });
@@ -27,8 +28,9 @@ const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: any) => {
     e.preventDefault();
 
     try {
@@ -46,25 +48,25 @@ export default function Component() {
 
       if (!response.ok) {
         if (response.status === 404) {
-          // 404 status indicates email not found
           toast.error("Email incorrect ou n'existe pas", { autoClose: 5000 });
         } else if (response.status === 401) {
-          // 401 status indicates invalid password
           toast.error("Mot de passe incorrect", { autoClose: 5000 });
         } else {
-          // Handle other errors
           toast.error("Erreur de connexion", { autoClose: 5000 });
         }
         return;
       }
 
-      // Stocker le token dans les cookies
+      // Successful login
       setCookieWithExpiry("csrfToken", csrfToken, 5);
       setCookieWithExpiry("access", data.access, 5);
       Cookies.set("refresh", data.refresh, { expires: 1 });
 
       toast.success("Connexion réussie", { autoClose: 2000 });
+      setIsLoggedIn(true); // Update login state
 
+      // Redirection vers la page d'accueil après une connexion réussie
+      Router.push("/users/register"); // Use Next.js Router for navigation
     } catch (error) {
       toast.error("Erreur de connexion", { autoClose: 2000 });
     }
