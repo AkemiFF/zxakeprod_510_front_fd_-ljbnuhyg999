@@ -17,7 +17,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import Cookies from 'js-cookie'
+import { getCsrfFromToken, getCsrfToken } from "@/lib/csrf";
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -73,9 +74,7 @@ export default function Component() {
               className="flex-1 p-8"
               onSubmit={async (e) => {
                 e.preventDefault();
-                // console.log(email);
-                // console.log(password);
-                // console.log(password1);
+
                 const resolveAfter3Sec = new Promise((resolve) =>
                   setTimeout(resolve, 2000)
                 );
@@ -87,30 +86,37 @@ export default function Component() {
                   return;
                 }
 
-                // TEST
-                // const api = fetch(
-                //   "http://192.168.88.56:8000/api/get-csrf-token/",
-                //   {
-                //     method: "get",
-                //     headers: {
-                //       "Content-Type": "application/json",
-                //     },
-                //     // body: JSON.stringify({ email, password }),
-                //   }
-                // );
+                const createClient = async (email: any, password: any) => {
+                  try {
 
-                const api = fetch(`${config.apiBaseUrl}/api/create/`, {
-                  method: "post",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  // body: JSON.stringify({ email: email, password: password }),
+                    const csrfToken = await getCsrfFromToken();
+                    const response = await fetch(`${config.apiBaseUrl}/api/info/client/create/`, {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                        'X-CSRFToken': csrfToken,
+                      },
+                      body: JSON.stringify({ email: email, password: password }),
+                    });
 
-                });
-                console.log(config.apiBaseUrl)
+                    if (!response.ok) {
+                      throw new Error('Failed to create client');
+                    }
+
+                    const data = await response.json();
+                    console.log("Client created:", data);
+                    return data;
+                  } catch (error) {
+                    console.error("Error creating client:", error.message);
+                    throw error;
+                  }
+                };
+
+                const api = createClient(email, password)
+
                 api.then(async (response) => {
                   if (!response.ok) {
-                    const errorData = await response.json();
+                    const errorData = response.json();
                     if (errorData.email) {
                       toast.error(errorData.email[0], {
                         autoClose: 5000,
@@ -121,24 +127,12 @@ export default function Component() {
                         autoClose: 5000,
                       });
                     }
-                    // throw new Error('API error: ' + JSON.stringify(errorData));
                   }
                   return response.json();
                 })
-                // .catch(error => {
-                //   console.error('There was a problem with the fetch operation:', error);
-                //   toast.error("Une erreur s'est produite lors de l'inscription: " + error.message, {
-                //     autoClose: 5000,
-                //   });
-                // });
 
-                const data = (await api).json();
-                console.log(
-                  data.then((data) => {
-                    console.log(JSON.stringify(data, null, 1));
-                    data.headers["set-cookie"][0];
-                  })
-                );
+
+
                 toast.promise(
                   api,
                   {
