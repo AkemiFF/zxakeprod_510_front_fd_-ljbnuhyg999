@@ -87,7 +87,7 @@ export default function ListClient() {
 
   const filteredData = useMemo(() => {
     return clients.filter(client => {
-      console.log(client)
+      console.log(client.email)
       const nameMatches = client.username && client.username.toLowerCase().includes(filters.name.toLowerCase());
       const lastMatches = client.first_name && client.first_name.toLowerCase().includes(filters.last.toLowerCase());
       return nameMatches && lastMatches;
@@ -175,7 +175,7 @@ export default function ListClient() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredData.map((item, index) => (
+            {clients.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.username}</TableCell>
                 <TableCell>{item.first_name}</TableCell>
