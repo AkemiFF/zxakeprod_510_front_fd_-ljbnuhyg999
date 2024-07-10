@@ -76,7 +76,7 @@ export default function ListClient() {
     fetch(`${config.apiBaseUrl}/api/info/clients/`)
       .then(response => response.json())
       .then(data => {
-        setClients(data); // Assurez-vous que les données renvoyées sont bien typées comme Client[]
+        setClients(data);
         setLoading(false);
       })
       .catch(error => {
