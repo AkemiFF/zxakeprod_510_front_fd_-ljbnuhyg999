@@ -17,6 +17,8 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../lib/useAuth';
+import config from "next/config";
+import Urlconfig from "@/lib/config";
 
 
 export default function Component() {
@@ -47,22 +49,23 @@ export default function Component() {
   //   };
   // }
 
-  const fetchData = async () => {
-    const accessToken = Cookies.get('access_token');
+  const fetchData = async (username: string, password: string) => {
+    // const accessToken = Cookies.get('access_token');
 
-    if (!accessToken) {
-      // Gérer le cas où l'access_token n'est pas disponible (utilisateur non authentifié)
-      console.error('No access token available');
-      return;
-    }
+    // if (!accessToken) {
+    //   // Gérer le cas où l'access_token n'est pas disponible (utilisateur non authentifié)
+    //   console.error('No access token available');
+    //   return;
+    // }
 
     try {
-      const response = await fetch('${config.apiBaseUrl}/api/token/', {
-        method: 'GET',
+      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/token/`, {
+        method: 'POST',
         headers: {
-          'Authorization': `Bearer ${accessToken}`,
+          // 'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({ username: username, password: password }),
       });
 
       if (!response.ok) {
@@ -75,9 +78,6 @@ export default function Component() {
       console.error('Error fetching data:', error);
     }
   };
-
-  fetchData();
-
 
   return (
     <>
@@ -103,6 +103,8 @@ export default function Component() {
               className="flex-1 p-8"
               onSubmit={async (e) => {
                 e.preventDefault();
+                fetchData(username, password);
+
                 console.log(username);
                 console.log(password);
 
@@ -121,12 +123,12 @@ export default function Component() {
                 );
               }}
             >
-              <h2 className="text-2xl font-semibold mb-2 text-center">
+              {/* <h2 className="text-2xl font-semibold mb-2 text-center">
                 Login to your account Administrator
               </h2>
               <p className="text-muted-foreground mb-6 text-center">
                 Welcome back! Please enter your details
-              </p>
+              </p> */}
 
               <div className="space-y-4 mt-8">
                 <div>
