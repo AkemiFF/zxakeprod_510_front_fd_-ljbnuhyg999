@@ -3,6 +3,7 @@
  * @see https://v0.dev/t/MCkQqpuduUV
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
+
 "use client";
 import Urlconfig from "../lib/config";
 import { useState, useMemo, useEffect } from "react";
@@ -44,6 +45,7 @@ import {
 import Link from "next/link";
 import Authorisation from "./Authorisation";
 import config from "next/config";
+
 interface TourOperator {
   first_name: string;
   last_name: string;
@@ -54,8 +56,8 @@ interface TourOperator {
 export default function ListAdminOperator() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    name: "",
-    last: "",
+    first_name: "",
+    last_name: "",
   });
   const [operators, setOperators] = useState<TourOperator[]>([]);
   const [loading, setLoading] = useState(true);
@@ -72,10 +74,10 @@ export default function ListAdminOperator() {
   };
 
   useEffect(() => {
-    fetch(`${Urlconfig.apiBaseUrl}/api/tourOperateur/tour_operateurs/`)
+    fetch(`${Urlconfig.apiBaseUrl}/api/accounts/responsables/type/3/`)
       .then(response => response.json())
       .then(data => {
-        setOperators(data); // Assurez-vous que les données renvoyées sont bien typées comme TourOperator[]
+        setOperators(data);
         setLoading(false);
       })
       .catch(error => {
@@ -84,13 +86,13 @@ export default function ListAdminOperator() {
       });
   }, []);
 
-  // const filteredData = useMemo(() => {
-  //   return operators.filter(operator => {
-  //     const nameMatches = operator.first_name.toLowerCase().includes(filters.name.toLowerCase());
-  //     const lastMatches = operator.last_name.toLowerCase().includes(filters.last.toLowerCase());
-  //     return nameMatches && lastMatches;
-  //   });
-  // }, [operators, filters]);
+  const filteredData = useMemo(() => {
+    return operators.filter(operator => {
+      const nameMatches = operator.first_name.toLowerCase().includes(filters.first_name.toLowerCase());
+      const lastMatches = operator.last_name.toLowerCase().includes(filters.last_name.toLowerCase());
+      return nameMatches && lastMatches;
+    });
+  }, [operators, filters]);
 
   return (
     <Card>
@@ -124,35 +126,26 @@ export default function ListAdminOperator() {
               <DropdownMenuSeparator />
               <div className="grid gap-2">
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="tourOperator">First Name</Label>
+                  <Label htmlFor="firstName">First Name</Label>
                   <Input
-                    id="tourOperator"
+                    id="firstName"
                     type="text"
-                    placeholder="Filter by tour operator"
+                    placeholder="Filter by first name"
+                    value={filters.first_name}
                     onChange={(e) =>
-                      handleFilterChange("tourOperator", e.target.value)
+                      handleFilterChange("first_name", e.target.value)
                     }
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="name">Last Name</Label>
+                  <Label htmlFor="lastName">Last Name</Label>
                   <Input
-                    id="name"
+                    id="lastName"
                     type="text"
-                    placeholder="Filter by name"
-                    value={filters.name}
-                    onChange={(e) => handleFilterChange("name", e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    type="text"
-                    placeholder="Filter by title"
-                    value={filters.last}
+                    placeholder="Filter by last name"
+                    value={filters.last_name}
                     onChange={(e) =>
-                      handleFilterChange("title", e.target.value)
+                      handleFilterChange("last_name", e.target.value)
                     }
                   />
                 </div>
@@ -172,7 +165,7 @@ export default function ListAdminOperator() {
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
-          {/* <TableBody>
+          <TableBody>
             {filteredData.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.first_name}</TableCell>
@@ -186,7 +179,7 @@ export default function ListAdminOperator() {
                 </TableCell>
               </TableRow>
             ))}
-          </TableBody> */}
+          </TableBody>
         </Table>
         <div className="flex items-center justify-center mt-8">
           <Pagination>
