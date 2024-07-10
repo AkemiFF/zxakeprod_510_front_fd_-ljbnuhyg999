@@ -7,7 +7,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 const GoogleMapComposant = ({ location, zoom = 15 }) => {
     return (
         <LoadScript
-            googleMapsApiKey="AIzaSyAnpvGGD_L2VHEEC-JZ-FEtiT2UvdxQNeY"
+            googleMapsApiKey=""
             libraries={['places']}
         >
             <GoogleMap
