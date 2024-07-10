@@ -20,8 +20,14 @@ import img3 from "../../../../public/chambre/chambre3.webp";
 import img4 from "../../../../public/chambre/chambre4.jpg";
 import img5 from "../../../../public/chambre/chambre5.avif";
 import { Spotlight } from "@/components/ui/SpotLight";
+import GoogleMapComposant from "@/components/GoogleMap";
 export default function DetailsHebergments() {
   const router = useRouter();
+  const myLocation = {
+    lat: -18.831107,
+    lng: 47.491135
+  };
+
   return (
     <div className="max-w-6xl p-4 mx-auto lg:px-6 sm:py-8 md:py-10">
       <Spotlight fill="#5B876B" className="absolute top-0" />
@@ -358,6 +364,10 @@ export default function DetailsHebergments() {
                   </div>
                 </div>
               </form>
+            </CardContent>
+          </Card><Card className="hover:bg-muted">
+            <CardContent className="grid gap-6 h-100">
+              <GoogleMapComposant location={myLocation} />
             </CardContent>
           </Card>
         </div>
