@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -18,9 +17,9 @@ export default function Component() {
   const [password, setPassword] = useState("");
   return (
     <>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right"/>
 
-      <div className="  flex flex-col items-center">
+      <div className="flex items-center mt-16">
         <div className="px-10">
           <Card className=" flex flex-col md:flex-row mt-8 bg-white shadow-lg py-4 rounded-none">
             <CardContent className="flex-1 p-8 bg-[#3d5a5b] text-white mx-10 max-sm:hidden pt-16">
@@ -75,20 +74,8 @@ export default function Component() {
               <p className="text-muted-foreground mb-6 text-center">
                 Welcome back! Please enter your details
               </p>
-              <Button
-                variant="outline"
-                type="button"
-                className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
-              >
-                <Image src={chrome} width={20} height={20} alt="chrome" />
-                <span>Login with Google</span>
-              </Button>
-              <div className="flex items-center mb-4">
-                <hr className="flex-1" />
-                <span className="px-2 text-sm text-muted-foreground">OR</span>
-                <hr className="flex-1" />
-              </div>
-              <div className="space-y-4">
+
+              <div className="space-y-4 mt-8">
                 <div>
                   <Label htmlFor="email">Email</Label>
                   <Input
