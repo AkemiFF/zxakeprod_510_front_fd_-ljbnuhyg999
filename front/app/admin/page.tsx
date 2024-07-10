@@ -12,19 +12,83 @@ import Link from "next/link";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { useAuth } from '../../lib/useAuth';
+import config from "next/config";
+import Urlconfig from "@/lib/config";
+
+
 export default function Component() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+
+  // function LoginPage() {
+  //   const [username, setUsername] = useState('');
+  //   const [password, setPassword] = useState('');
+  //   const { setAuthTokens } = useAuth();
+  //   const router = useRouter();
+
+  //   const handleLogin = async () => {
+  //     try {
+  //       const response = await axios.post('${config.apiBaseUrl}/api/token/', {
+  //         username,
+  //         password,
+  //       });
+
+  //       const { access, refresh } = response.data;
+  //       setAuthTokens({ access, refresh });
+
+  //       // Rediriger l'utilisateur vers une autre page après la connexion
+  //       router.push('/dashboard');
+  //     } catch (error) {
+  //       console.error('Error logging in:', error);
+  //     }
+  //   };
+  // }
+
+  const fetchData = async (username: string, password: string) => {
+    // const accessToken = Cookies.get('access_token');
+
+    // if (!accessToken) {
+    //   // Gérer le cas où l'access_token n'est pas disponible (utilisateur non authentifié)
+    //   console.error('No access token available');
+    //   return;
+    // }
+
+    try {
+      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/token/`, {
+        method: 'POST',
+        headers: {
+          // 'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: username, password: password }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
   return (
     <>
-      <ToastContainer position="bottom-right"/>
+      <ToastContainer position="bottom-right" />
 
       <div className="flex items-center mt-16">
         <div className="px-10">
           <Card className=" flex flex-col md:flex-row mt-8 bg-white shadow-lg py-4 rounded-none">
             <CardContent className="flex-1 p-8 bg-[#3d5a5b] text-white mx-10 max-sm:hidden pt-16">
               <div className="flex items-center justify-center">
-                <Image src={logo} alt="Image 1" width={150} height={150} style={{ filter: 'brightness(1)' }}/>
+                <Image src={logo} alt="Image 1" width={150} height={150} style={{ filter: 'brightness(1)' }} />
               </div>
               <p className="text-center italic text-lg mb-4 mt-10">
                 Lorem ipsum dolor emet si tu acquiem perma!
@@ -39,23 +103,14 @@ export default function Component() {
               className="flex-1 p-8"
               onSubmit={async (e) => {
                 e.preventDefault();
-                console.log(email);
+                fetchData(username, password);
+
+                console.log(username);
                 console.log(password);
 
                 const resolveAfter3Sec = new Promise((resolve) =>
                   setTimeout(resolve, 2000)
                 );
-
-                // Daniel 08/07/24
-                // const response = await fetch("http://127.0.0.1:8000/api/accounts/client/login/", {
-                //   method: "POST",
-                //   headers: {
-                //     "Content-Type": "application/json",
-                //   },
-                //   body: JSON.stringify({ email, password }),
-                // });
-                // const data = await response.json();
-                // console.log(data);
 
                 toast.promise(
                   resolveAfter3Sec,
@@ -68,24 +123,24 @@ export default function Component() {
                 );
               }}
             >
-              <h2 className="text-2xl font-semibold mb-2 text-center">
-                Login to your account
+              {/* <h2 className="text-2xl font-semibold mb-2 text-center">
+                Login to your account Administrator
               </h2>
               <p className="text-muted-foreground mb-6 text-center">
                 Welcome back! Please enter your details
-              </p>
+              </p> */}
 
               <div className="space-y-4 mt-8">
                 <div>
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="text">Username</Label>
                   <Input
-                    id="email"
-                    placeholder="Enter your email"
-                    type="email"
+                    id="username"
+                    placeholder="Enter your username"
+                    type="username"
                     required
                     className="rounded-none"
                     onChange={(e) => {
-                      setEmail(e.target.value);
+                      setUsername(e.target.value);
                     }}
                   />
                 </div>
@@ -104,11 +159,10 @@ export default function Component() {
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="remember" />
-                    <Label htmlFor="remember">Remember me</Label>
+                    <Label htmlFor="remember"></Label>
                   </div>
                   <a href="#" className="text-sm text-muted-foreground">
-                    Forgotten password?
+
                   </a>
                 </div>
                 <Button
@@ -119,9 +173,9 @@ export default function Component() {
                 </Button>
               </div>
               <p className="text-center text-sm mt-4">
-                Don t have any account yet?{" "}
+                {" "}
                 <Link href="/users/register" className="font-semibold">
-                  Register
+
                 </Link>
               </p>
             </form>
