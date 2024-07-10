@@ -73,7 +73,7 @@ export default function ListClient() {
   };
 
   useEffect(() => {
-    fetch(`${Urlconfig.apiBaseUrl}/api/info/clients/`)
+    fetch(`${Urlconfig.apiBaseUrl}/api/accounts/clients/`)
       .then(response => response.json())
       .then(data => {
         setClients(data); // Assurez-vous que les données renvoyées sont bien typées comme Client[]
