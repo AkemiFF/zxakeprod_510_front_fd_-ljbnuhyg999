@@ -1,10 +1,5 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/MCkQqpuduUV
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 "use client";
-
+import Urlconfig from "../lib/config";
 import { useState, useMemo, useEffect } from "react";
 import {
   Card,
@@ -31,7 +26,7 @@ import {
   TableBody,
   TableCell,
 } from "@/components/ui/table";
-import { FilterIcon, PlusIcon } from "./icons";
+import { FilterIcon } from "./icons";
 import {
   Pagination,
   PaginationContent,
@@ -41,34 +36,48 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "./ui/pagination";
-import Link from "next/link";
 import Authorisation from "./Authorisation";
-import { Console, log } from "console";
+import { toast } from "react-toastify";
+
+interface Client {
+  id: number;
+  username: string;
+  first_name: string;
+  email: string;
+  numero_client: string;
+  isBlocked: boolean; // Nouvelle propriété pour l'état de blocage
+}
 
 export default function ListClient() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    name: "",
-    last: "",
+    first_name: "",
+    last_name: "",
   });
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-  const handleFilterChange = (field: String, value: String) => {
+
+  const handleFilterChange = (field: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      //   [field]: value,
+      [field]: value,
     }));
   };
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/info/clients/')
+    fetch(`${Urlconfig.apiBaseUrl}/api/accounts/clients/`)
       .then(response => response.json())
       .then(data => {
-        setClients(data);
+        // Ajouter la propriété isBlocked à chaque client
+        const clientsWithBlockedStatus = data.map((client: Client) => ({
+          ...client,
+          isBlocked: false, // Supposons que les clients ne soient pas bloqués par défaut
+        }));
+        setClients(clientsWithBlockedStatus);
         setLoading(false);
       })
       .catch(error => {
@@ -77,32 +86,53 @@ export default function ListClient() {
       });
   }, []);
 
+  const handleBlockClick = (clientId: number, currentStatus: boolean) => {
+    const endpoint = currentStatus
+      ? `${Urlconfig.apiBaseUrl}/api/accounts/client-update/${clientId}/ban/`
+      : `${Urlconfig.apiBaseUrl}/api/accounts/client-update/${clientId}/ban/`;
+
+    fetch(endpoint, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => {
+        if (response.ok) {
+          setClients(prevClients =>
+            prevClients.map(client =>
+              client.id === clientId ? { ...client, isBlocked: !currentStatus } : client
+            )
+          );
+          toast.success(currentStatus ? 'Client unblocked successfully' : 'Client blocked successfully');
+        } else {
+          toast.error(currentStatus ? 'Failed to unblock client' : 'Failed to block client');
+        }
+      })
+      .catch(error => {
+        toast.error(currentStatus ? 'Error unblocking client:' : 'Error blocking client:', error.message);
+      });
+  };
+
   const filteredData = useMemo(() => {
-
-    const data = clients.map(client => {
-      return {
-        name: " client.username",
-        last: "client.first_name",
-        email: "client.email",
-        phone: "client.numero_client",
-      };
+    return clients.filter(client => {
+      const searchMatches = search === "" || client.username.toLowerCase().includes(search.toLowerCase());
+      const nameMatches = client.first_name.toLowerCase().includes(filters.first_name.toLowerCase());
+      const lastMatches = client.username.toLowerCase().includes(filters.last_name.toLowerCase());
+      return searchMatches && nameMatches && lastMatches;
     });
+  }, [clients, search, filters]);
 
-    return data.filter((item) => {
-      return (
-        item.name.toLowerCase().includes(filters.name.toLowerCase()) &&
-        item.last.toLowerCase().includes(filters.last.toLowerCase())
-      );
-    });
-  }, [filters]);
-
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Card>
       <CardHeader className="bg-primary mb-10 rounded-t-md text-white">
         <CardTitle className="font-bold text-xl">Client User</CardTitle>
         <CardDescription className="text-white">
-          A list of all Client in this site.
+          A list of all Clients on this site.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -126,36 +156,25 @@ export default function ListClient() {
               <DropdownMenuSeparator />
               <div className="grid gap-2">
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="tourOperator">First Name</Label>
+                  <Label htmlFor="first_name">First Name</Label>
                   <Input
-                    id="tourOperator"
+                    id="first_name"
                     type="text"
-                    placeholder="Filter by tour operator"
+                    placeholder="Filter by first name"
+                    value={filters.first_name}
                     onChange={(e) =>
-                      handleFilterChange("tourOperator", e.target.value)
+                      handleFilterChange("first_name", e.target.value)
                     }
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="name">Last Name</Label>
+                  <Label htmlFor="last_name">Last Name</Label>
                   <Input
-                    id="name"
+                    id="last_name"
                     type="text"
-                    placeholder="Filter by name"
-                    value={filters.name}
-                    onChange={(e) => handleFilterChange("name", e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    type="text"
-                    placeholder="Filter by title"
-                    value={filters.last}
-                    onChange={(e) =>
-                      handleFilterChange("title", e.target.value)
-                    }
+                    placeholder="Filter by last name"
+                    value={filters.last_name}
+                    onChange={(e) => handleFilterChange("last_name", e.target.value)}
                   />
                 </div>
               </div>
@@ -179,16 +198,17 @@ export default function ListClient() {
           <TableBody>
             {filteredData.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.last}</TableCell>
-                <TableCell className="max-sm:hidden max-md:hidden">
-                  {item.email}
-                </TableCell>
-                <TableCell className="max-sm:hidden">{item.phone}</TableCell>
-                <TableCell className=" flex items-center justify-center gap-10">
+                <TableCell>{item.first_name}</TableCell>
+                <TableCell>{item.username}</TableCell>
+                <TableCell className="max-sm:hidden max-md:hidden">{item.email}</TableCell>
+                <TableCell className="max-sm:hidden">{item.numero_client}</TableCell>
+                <TableCell className="flex items-center justify-center gap-10">
                   <Authorisation />
-                  <Button className="bg-red-700 hover:bg-red-500">
-                    Blocked
+                  <Button
+                    className={item.isBlocked ? "bg-green-700 hover:bg-green-500" : "bg-red-700 hover:bg-red-500"}
+                    onClick={() => handleBlockClick(item.id, item.isBlocked)}
+                  >
+                    {item.isBlocked ? 'Activated' : 'Blocked'}
                   </Button>
                 </TableCell>
               </TableRow>
@@ -202,10 +222,10 @@ export default function ListClient() {
                 <PaginationPrevious href="#" />
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
+                <PaginationLink href="#" isActive>1</PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#" isActive>
+                <PaginationLink href="#">
                   2
                 </PaginationLink>
               </PaginationItem>

@@ -19,10 +19,16 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie'
 import { getCsrfFromToken, getCsrfToken } from "@/lib/csrf";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
+import { SessionProvider, signIn } from 'next-auth/react';
+import GoogleSignupButton from "@/components/GoogleSignupButton";
 export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password1, setPassword1] = useState("");
+  const handleLogin = () => {
+    signIn('google');
+  };
   return (
     <>
       <ToastContainer position="bottom-right" />
@@ -107,7 +113,7 @@ export default function Component() {
                     console.log("Client created:", data);
                     return data;
                   } catch (error) {
-                    console.error("Error creating client:", error.message);
+                    // console.error("Error creating client:", error.message);
                     throw error;
                   }
                 };
@@ -151,14 +157,19 @@ export default function Component() {
               <p className="text-muted-foreground mb-6 text-center">
                 Welcome ! Please enter your details
               </p>
-              <Button
+              <SessionProvider><Button
                 variant="outline"
                 type="button"
                 className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
+                onClick={handleLogin}
               >
                 <Image src={chrome} width={20} height={20} alt="chrome" />
                 <span>Sign up with Google</span>
-              </Button>
+
+                {/* <GoogleSignupButton /> */}
+
+
+              </Button></SessionProvider>
               <div className="flex items-center mb-4">
                 <hr className="flex-1" />
                 <span className="px-2 text-sm text-muted-foreground">OR</span>

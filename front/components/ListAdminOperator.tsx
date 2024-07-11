@@ -3,9 +3,10 @@
  * @see https://v0.dev/t/MCkQqpuduUV
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-"use client";
 
-import { useState, useMemo } from "react";
+"use client";
+import Urlconfig from "../lib/config";
+import { useState, useMemo, useEffect } from "react";
 import {
   Card,
   CardHeader,
@@ -43,62 +44,56 @@ import {
 } from "./ui/pagination";
 import Link from "next/link";
 import Authorisation from "./Authorisation";
+import config from "next/config";
+
+interface TourOperator {
+  first_name: string;
+  last_name: string;
+  email: string;
+  numero_responsable: string;
+}
 
 export default function ListAdminOperator() {
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    name: "",
-    last: "",
+    first_name: "",
+    last_name: "",
   });
-  const handleSearch = (e: any) => {
+  const [operators, setOperators] = useState<TourOperator[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-  const handleFilterChange = (field: String, value: String) => {
+
+  const handleFilterChange = (field: string, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      //   [field]: value,
+      [field]: value,
     }));
   };
+
+  useEffect(() => {
+    fetch(`${Urlconfig.apiBaseUrl}/api/accounts/responsables/type/3/`)
+      .then(response => response.json())
+      .then(data => {
+        setOperators(data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error fetching operators data:', error);
+        setLoading(false);
+      });
+  }, []);
+
   const filteredData = useMemo(() => {
-    //ici on fait le fetch
-    return [
-      {
-        name: "John ",
-        last: "Doe",
-        email: "john.doe@acmetravel.com",
-        phone: "+1 (555) 555-5555",
-      },
-      {
-        name: "Jane ",
-        last: "Smith",
-        email: "jane.smith@globetrottertours.com",
-        phone: "+1 (555) 555-5556",
-      },
-      {
-        name: "Michael ",
-        last: "Johnson",
-        email: "michael.johnson@adventureseekers.com",
-        phone: "+1 (555) 555-5557",
-      },
-      {
-        name: "Emily ",
-        last: "Davis",
-        email: "emily.davis@wanderlustexpeditions.com",
-        phone: "+1 (555) 555-5558",
-      },
-      {
-        name: "David ",
-        last: "Lee",
-        email: "david.lee@horizonvacations.com",
-        phone: "+1 (555) 555-5559",
-      },
-    ].filter((item) => {
-      return (
-        item.name.toLowerCase().includes(filters.name.toLowerCase()) &&
-        item.last.toLowerCase().includes(filters.last.toLowerCase())
-      );
+    return operators.filter(operator => {
+      const nameMatches = operator.first_name.toLowerCase().includes(filters.first_name.toLowerCase());
+      const lastMatches = operator.last_name.toLowerCase().includes(filters.last_name.toLowerCase());
+      return nameMatches && lastMatches;
     });
-  }, [filters]);
+  }, [operators, filters]);
+
   return (
     <Card>
       <CardHeader className="bg-primary mb-10 rounded-t-md text-white">
@@ -131,35 +126,26 @@ export default function ListAdminOperator() {
               <DropdownMenuSeparator />
               <div className="grid gap-2">
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="tourOperator">First Name</Label>
+                  <Label htmlFor="firstName">First Name</Label>
                   <Input
-                    id="tourOperator"
+                    id="firstName"
                     type="text"
-                    placeholder="Filter by tour operator"
+                    placeholder="Filter by first name"
+                    value={filters.first_name}
                     onChange={(e) =>
-                      handleFilterChange("tourOperator", e.target.value)
+                      handleFilterChange("first_name", e.target.value)
                     }
                   />
                 </div>
                 <div className="flex items-center gap-2">
-                  <Label htmlFor="name">Last Name</Label>
+                  <Label htmlFor="lastName">Last Name</Label>
                   <Input
-                    id="name"
+                    id="lastName"
                     type="text"
-                    placeholder="Filter by name"
-                    value={filters.name}
-                    onChange={(e) => handleFilterChange("name", e.target.value)}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <Label htmlFor="title">Title</Label>
-                  <Input
-                    id="title"
-                    type="text"
-                    placeholder="Filter by title"
-                    value={filters.last}
+                    placeholder="Filter by last name"
+                    value={filters.last_name}
                     onChange={(e) =>
-                      handleFilterChange("title", e.target.value)
+                      handleFilterChange("last_name", e.target.value)
                     }
                   />
                 </div>
@@ -182,12 +168,12 @@ export default function ListAdminOperator() {
           <TableBody>
             {filteredData.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.last}</TableCell>
+                <TableCell>{item.first_name}</TableCell>
+                <TableCell>{item.last_name}</TableCell>
                 <TableCell className="max-sm:hidden max-md:hidden">
                   {item.email}
                 </TableCell>
-                <TableCell className="max-sm:hidden">{item.phone}</TableCell>
+                <TableCell className="max-sm:hidden">{item.numero_responsable}</TableCell>
                 <TableCell>
                   <Authorisation />
                 </TableCell>
@@ -202,10 +188,10 @@ export default function ListAdminOperator() {
                 <PaginationPrevious href="#" />
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
+                <PaginationLink href="#" isActive>1</PaginationLink>
               </PaginationItem>
               <PaginationItem>
-                <PaginationLink href="#" isActive>
+                <PaginationLink href="#">
                   2
                 </PaginationLink>
               </PaginationItem>
