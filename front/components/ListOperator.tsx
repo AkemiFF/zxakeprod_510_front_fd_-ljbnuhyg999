@@ -14,55 +14,57 @@ import Link from "next/link";
 import { Meteors } from "./ui/Meteor";
 import { HoverEffect } from "./ui/card-hover-effect";
 import Operatorview from "./Operatorview";
+import { useEffect, useState } from "react";
+import { fetch_new_access } from "@/lib/csrf";
+import Urlconfig from "@/lib/config";
 
-interface Operator {
-  name: string;
-  description: string;
-  type: String;
-  rating: number;
+interface OperatorsModel {
+  type: String,
+  id: number;
+  nom_operateur: string;
+  description_operateur: string;
+  nombre_etoile_operateur: number;
   review: number;
-  address: string;
+  address: number;
 }
 
 export default function ListHotel() {
-  const hotels: Operator[] = [
-    {
-      name: "Cameleon agency",
-      type: "Aventure",
-      description: "Located in the heart of Paris",
-      rating: 4.5,
-      review: 450,
+  const [operators, setOperators] = useState<OperatorsModel[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-      address: "123 Main St, Paris, France",
-    },
-    {
-      name: " Big agency",
-      type: "Culturel",
-      description: "Stunning view of the Eiffel Tower",
-      rating: 4.7,
-      review: 380,
+  useEffect(() => {
+    const fetchOperators = async () => {
+      try {
+        const new_access = await fetch_new_access();
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/tour-operateurs/get_all_tour_operateurs/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${new_access}`,
+          },
+        });
 
-      address: "456 Elm St, Paris, France",
-    },
-    {
-      name: "Robert Clarisse",
-      type: "Autre",
-      description: "Situated in the bustling city center",
-      rating: 4.9,
-      review: 300,
+        const data = await response.json();
+        console.log("Data from server:", data); // Log pour vérifier les données
+        if (data && Array.isArray(data)) {
+          setOperators(data);
+        } else {
+          console.error("Data is not an array:", data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching hotels:", error);
+        setLoading(false);
+      }
+    };
 
-      address: "789 Oak St, Paris, France",
-    },
-    {
-      name: "Villa Dreams Agency",
-      type: "Fantasy",
-      description: "Nestled in the heart of New York City",
-      rating: 4.2,
-      review: 500,
+    fetchOperators();
+  }, []);
 
-      address: "101 Maple St, New York, USA",
-    },
-  ];
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-6">
@@ -85,18 +87,15 @@ export default function ListHotel() {
         </div>
       </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {hotels.map((hotel, i) => (
-          <>
-            <Operatorview
-              key={hotel.name}
-              name={hotel.name}
-              description={hotel.description}
-              type={hotel.type}
-              rating={hotel.rating}
-              review={hotel.review}
-              address={hotel.address}
-            />
-          </>
+        {operators.map((operator, i) => (
+          <Operatorview
+            key={i}
+            name={operator.nom_operateur}
+            description={operator.description_operateur}
+            type={operator.type}
+            rating={operator.nombre_etoile_operateur || 0}
+            review={operator.review || 0}
+          />
         ))}
       </div>
       <div className="flex items-center justify-center mt-8">
