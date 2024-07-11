@@ -76,7 +76,7 @@ export default function Component() {
       }
 
     } catch (error) {
-      // console.error('Error verifying admin status:', error);
+      console.error('Error verifying admin status:', error);
       toast.error('Erreur lors de la vérification du statut d\'administrateur');
     }
   };
@@ -115,7 +115,7 @@ export default function Component() {
                   resolveAfter3Sec,
                   {
                     pending: "Connexion au serveur",
-                    success: "Connexion réussie",
+                    // success: "Connexion réussie",
                     error: "Erreur de la connexion",
                   },
                   { autoClose: 2000 }
