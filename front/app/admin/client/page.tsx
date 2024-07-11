@@ -5,11 +5,14 @@ import HeaderAdmin from "@/components/HeaderAdmin";
 import ListOperator from "@/components/ListOperator";
 import { Spotlight } from "@/components/ui/SpotLight";
 import ListClient from "@/components/ListClient";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function page() {
   let value = "bg-accent text-accent-foreground";
   return (
     <div className="flex flex-col w-full min-h-screen bg-muted/40">
+      <ToastContainer position="bottom-right" />
       <Navadmin
         mess={""}
         dash={""}

@@ -17,9 +17,20 @@ import {
 import HeaderAdmin from "@/components/HeaderAdmin";
 import { Spotlight } from "@/components/ui/SpotLight";
 import Link from "next/link";
+import Cookies from 'js-cookie';
+import Urlconfig from "@/lib/config";
 
 export default function Component() {
   let value = "bg-accent";
+
+  const verify_cookies = async () => {
+    const cookies = Cookies.get("refresh_token");
+
+    if (!cookies) {
+      window.location.href = `${Urlconfig.adminUrl}/`;
+    }
+  }
+  verify_cookies();
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Navadmin
