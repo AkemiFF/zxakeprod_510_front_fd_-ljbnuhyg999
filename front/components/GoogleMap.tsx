@@ -1,10 +1,9 @@
 import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
+type LocationType = { lat: number; lng: number };
 
-
-
-const GoogleMapComposant = ({ location, zoom = 15 }) => {
+const GoogleMapComposant = ({ location, zoom = 17 }: { location: LocationType; zoom?: number }) => {
     return (
         <LoadScript
             googleMapsApiKey="AIzaSyAnpvGGD_L2VHEEC-JZ-FEtiT2UvdxQNeY"

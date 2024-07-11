@@ -12,7 +12,7 @@ export const getCsrfToken = async () => {
 
     if (response.ok) {
         const data = await response.json();
-        console.log("CSRF token set:", data);
+        // console.log("CSRF token set:", data);
     } else {
         console.error("Failed to get CSRF token");
     }

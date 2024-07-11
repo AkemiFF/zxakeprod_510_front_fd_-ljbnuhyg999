@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import {
   DropdownMenu,
@@ -32,6 +32,9 @@ import {
 import Link from "next/link";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import admin from "../app/favicon.ico";
+import router, { useRouter } from "next/navigation";
+import Cookies from 'js-cookie';
+
 
 interface HeaderAdminProps {
   name: string;
@@ -39,7 +42,34 @@ interface HeaderAdminProps {
   more: string;
 }
 
-export default function HeaderAdmin(propss: HeaderAdminProps) {
+export default function HeaderAdmin(props: HeaderAdminProps) {
+  const router = useRouter();
+
+  const handleLogout = () => {
+
+    router.push("/admin");
+    clearAllCookies();
+    // logout();
+  };
+
+  // Supprimer les cookies une fois la redirection effectuée
+  // const logout = () => {
+  //   // console.log(Cookies.get('access_token'));
+  //   Cookies.remove('access_token');
+  //   Cookies.remove('refresh_token');
+  //   Cookies.remove('csrftoken');
+  //   Cookies.remove('sessionid');
+  // };
+
+  const clearAllCookies = () => {
+    const allCookies = Cookies.get();
+    console.log(allCookies);
+
+    for (const cookieName in allCookies) {
+      Cookies.remove(cookieName);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -73,7 +103,7 @@ export default function HeaderAdmin(propss: HeaderAdminProps) {
               prefetch={false}
             >
               <HotelIcon className="h-5 w-5" />
-              accommodation
+              Accommodation
             </Link>
             <Link
               href="/admin/craft"
@@ -114,14 +144,14 @@ export default function HeaderAdmin(propss: HeaderAdminProps) {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href={"/admin/" + propss.links} prefetch={false}>
-                {propss.name}
+              <Link href={"/admin/" + props.links} prefetch={false}>
+                {props.name}
               </Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{propss.more}</BreadcrumbPage>
+            <BreadcrumbPage>{props.more}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -152,10 +182,10 @@ export default function HeaderAdmin(propss: HeaderAdminProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          {/* <DropdownMenuItem>Settings</DropdownMenuItem> */}
+          {/* <DropdownMenuItem>Support</DropdownMenuItem> */}
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
