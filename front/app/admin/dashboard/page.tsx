@@ -25,6 +25,7 @@ export default function Component() {
 
   const verify_cookies = async () => {
     const cookies = Cookies.get("refresh_token");
+
     if (!cookies) {
       window.location.href = `${Urlconfig.adminUrl}/`;
     }
