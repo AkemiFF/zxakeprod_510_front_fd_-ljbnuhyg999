@@ -6,7 +6,7 @@ type LocationType = { lat: number; lng: number };
 const GoogleMapComposant = ({ location, zoom = 17 }: { location: LocationType; zoom?: number }) => {
     return (
         <LoadScript
-            googleMapsApiKey=""
+            googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API}
             libraries={['places']}
         >
             <GoogleMap
