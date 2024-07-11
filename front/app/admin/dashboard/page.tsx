@@ -19,23 +19,74 @@ import { Spotlight } from "@/components/ui/SpotLight";
 import Link from "next/link";
 import Cookies from 'js-cookie';
 import Urlconfig from "@/lib/config";
+import { useState, useEffect } from "react";
+import { fetch_new_access } from "@/lib/csrf";
 
 export default function Component() {
-  let value = "bg-accent";
+  const [accommodationCount, setAccommodationCount] = useState(0);
+  const [TourOperatorCount, setTourOperatorCount] = useState(0);
 
-  const verify_cookies = async () => {
-    const cookies = Cookies.get("refresh_token");
+  useEffect(() => {
+    // Verification Cookies
+    const verifyCookies = async () => {
+      const cookies = Cookies.get("refresh_token");
 
-    if (!cookies) {
-      window.location.href = `${Urlconfig.adminUrl}/`;
-    }
-  }
-  verify_cookies();
+      if (!cookies) {
+        window.location.href = `${Urlconfig.adminUrl}/`;
+      }
+    };
+
+    // Recuperation numbre d'accomodation
+    const fetch_AccommodationCount = async () => {
+      try {
+        const new_access = await fetch_new_access();
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/hebergement/get-count-hebergement/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${new_access}`, //Authorization token a partir access token
+          },
+        });
+
+        const data = await response.json();
+        // console.log('Data from server:', data);
+        setAccommodationCount(data.count);
+      } catch (error) {
+        console.error('Error fetching accommodation count:', error);
+      }
+    };
+
+    const fetch_TourOperatorCount = async () => {
+      try {
+        const new_access = await fetch_new_access();
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/hebergement/get-count-hebergement/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${new_access}`,
+          },
+        });
+
+        const data = await response.json();
+        // console.log('Data from server:', data);
+        setTourOperatorCount(data.count);
+      } catch (error) {
+        console.error('Error fetching accommodation count:', error);
+      }
+    };
+
+
+
+    verifyCookies();
+    fetch_AccommodationCount();
+    fetch_TourOperatorCount();
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
       <Navadmin
         mess={""}
-        dash={value}
+        dash="bg-accent"
         hotels={""}
         craft={""}
         tour={""}
@@ -50,12 +101,12 @@ export default function Component() {
             <Link href="/admin/hotel">
               <Card className="hover:bg-slate-200 transition-all">
                 <CardHeader>
-                  <CardTitle>accommodation</CardTitle>
+                  <CardTitle>Accommodation</CardTitle>
                   <CardDescription>Registered accommodation</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-4xl font-bold">125</div>
+                    <div className="text-4xl font-bold">{accommodationCount}</div>
                     <HotelIcon className="h-8 w-8 text-primary" />
                   </div>
                 </CardContent>
@@ -69,13 +120,12 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-4xl font-bold">35</div>
+                    <div className="text-4xl font-bold">{TourOperatorCount}</div>
                     <CompassIcon className="h-8 w-8 text-primary" />
                   </div>
                 </CardContent>
               </Card>
             </Link>
-
             <Link href="/admin/craft">
               <Card className="hover:bg-slate-200 transition-all">
                 <CardHeader>
@@ -134,7 +184,7 @@ export default function Component() {
               <CardHeader>
                 <CardTitle>Customer Sign in this year</CardTitle>
                 <CardDescription>
-                  hotel customer signed in over the last 6 months.
+                  Hotel customer signed in over the last 6 months.
                 </CardDescription>
               </CardHeader>
               <CardContent>
