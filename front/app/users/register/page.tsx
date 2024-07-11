@@ -26,9 +26,9 @@ export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password1, setPassword1] = useState("");
-  const handleLogin = () => {
-    signIn('google');
-  };
+
+
+
   return (
     <>
       <ToastContainer position="bottom-right" />
@@ -157,19 +157,17 @@ export default function Component() {
               <p className="text-muted-foreground mb-6 text-center">
                 Welcome ! Please enter your details
               </p>
-              <SessionProvider><Button
-                variant="outline"
-                type="button"
-                className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
-                onClick={handleLogin}
-              >
-                <Image src={chrome} width={20} height={20} alt="chrome" />
-                <span>Sign up with Google</span>
+              <SessionProvider>
+                <Button
+                  variant="outline"
+                  type="button"
+                  className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
+                >
 
-                {/* <GoogleSignupButton /> */}
-
-
-              </Button></SessionProvider>
+                  <Image src={chrome} width={20} height={20} alt="chrome" />
+                  <GoogleLoginButton />
+                </Button>
+              </SessionProvider>
               <div className="flex items-center mb-4">
                 <hr className="flex-1" />
                 <span className="px-2 text-sm text-muted-foreground">OR</span>
