@@ -21,6 +21,26 @@ export default function Component() {
   const [password, setPassword] = useState("");
   const router = useRouter();
 
+
+  const verify_cookies = async () => {
+    const cookies = Cookies.get("refresh_token");
+    if (cookies) {
+      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/token/refresh/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh: cookies }),
+      });
+      const data = await response.json();
+      if (data.access) {
+        window.location.href = `${Urlconfig.adminUrl}/dashboard/`;
+      }
+    }
+
+  }
+  verify_cookies();
+
   const fetchData = async (username: string, password: string) => {
     try {
       const response = await fetch(`${Urlconfig.apiBaseUrl}/api/token/`, {
@@ -39,8 +59,10 @@ export default function Component() {
       // console.log(data);
 
       // Store tokens in cookies
-      Cookies.set('access_token', data.access);
-      Cookies.set('refresh_token', data.refresh);
+      // Cookies.set('access_token', data.access);
+      // Cookies.set('refresh_token', data.refresh);
+      Cookies.set('access_token', data.access, { expires: 7, secure: true, sameSite: 'strict' });
+      Cookies.set('refresh_token', data.refresh, { expires: 30, secure: true, sameSite: 'strict' });
 
       // Verify if the user is an admin
       checkAdminStatus(data.access);
