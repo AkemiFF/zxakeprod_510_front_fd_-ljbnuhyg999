@@ -19,6 +19,21 @@ export interface hebergement {
   dateUpdate: string;
 }
 
+export interface tour {
+  id: number;
+  operatorTour: string;
+  circuitTour: string;
+  villeTour: string;
+  descriptionsTour: string;
+  responsableTour: string;
+  prixTour : string;
+  imageTour: string;
+  nuiteeTour : string;
+  jourTour : string;
+  dateCreated: string;
+  dateUpdate: string;
+}
+
 export interface commandListReducer {
   value: string;
   label: string;
