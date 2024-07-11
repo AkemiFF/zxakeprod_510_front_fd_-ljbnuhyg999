@@ -126,10 +126,14 @@ export default function OperatorTour() {
         <main className="w-full mb-24 overflow-x-hidden mt-6 md:ps-14 md:pe-8">
             <section className = "lg:flex lg:flex-row justify-center items-center">
               <div className="w-100">
-                  <h1 className="text-4xl font-bold mb-6">Liven up your trip with tour operators</h1>
+                  <h1 className="text-4xl font-bold mb-6 text-[#305555]">Liven up your trip with tour operators</h1>
                   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid facere maiores quia cupiditate, quos sint animi quaerat possimus ipsa sapiente. </p>
                   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid facere maiores quia cupiditate, quos sint animi quaerat possimus ipsa sapiente. </p>
                   <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquid facere maiores quia cupiditate, quos sint animi quaerat possimus ipsa sapiente. </p>
+              
+                  <Link href="/users/tour/result/">
+                        <Button className="hover:opacity-80 mt-12 text-lg">Explore all operators</Button>
+                  </Link>
               </div>
 
               <div className="grid grid-cols-2 gap-4 w-full">
