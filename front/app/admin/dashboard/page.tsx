@@ -26,6 +26,7 @@ export default function Component() {
   const [accommodationCount, setAccommodationCount] = useState(0);
   const [TourOperatorCount, setTourOperatorCount] = useState(0);
   const [ArtisanlCount, setArtisanalCount] = useState(0);
+  const [ClientCount, setClientCount] = useState(0);
 
   useEffect(() => {
     // Verification Cookies
@@ -104,10 +105,36 @@ export default function Component() {
       }
     };
 
+    const fetch_ClientCount = async () => {
+      try {
+        const new_access = await fetch_new_access();
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/get_count_client/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${new_access}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch tour operator count. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // console.log('Data from server:', data);
+        setClientCount(data.count);
+      } catch (error) {
+        console.error('Error fetching tour operator count:', error);
+      }
+    };
+
+
+
     verifyCookies();
     fetch_AccommodationCount();
     fetch_TourOperatorCount();
     fetch_ArtisanalCount();
+    fetch_ClientCount(); //
   }, []);
 
   return (
@@ -176,7 +203,7 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-4xl font-bold">2,345</div>
+                    <div className="text-4xl font-bold">{ClientCount}</div>
                     <UsersIcon className="h-8 w-8 text-primary" />
                   </div>
                 </CardContent>
