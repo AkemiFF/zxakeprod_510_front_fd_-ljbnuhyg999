@@ -25,6 +25,7 @@ import { fetch_new_access } from "@/lib/csrf";
 export default function Component() {
   const [accommodationCount, setAccommodationCount] = useState(0);
   const [TourOperatorCount, setTourOperatorCount] = useState(0);
+  const [ArtisanlCount, setArtisanalCount] = useState(0);
 
   useEffect(() => {
     // Verification Cookies
@@ -59,7 +60,7 @@ export default function Component() {
     const fetch_TourOperatorCount = async () => {
       try {
         const new_access = await fetch_new_access();
-        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/hebergement/get-count-hebergement/`, {
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/tour-operateurs/get_count_operateur/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -67,19 +68,46 @@ export default function Component() {
           },
         });
 
+        if (!response.ok) {
+          throw new Error(`Failed to fetch tour operator count. Status: ${response.status}`);
+        }
+
         const data = await response.json();
         // console.log('Data from server:', data);
         setTourOperatorCount(data.count);
       } catch (error) {
-        console.error('Error fetching accommodation count:', error);
+        console.error('Error fetching tour operator count:', error);
       }
     };
 
 
+    const fetch_ArtisanalCount = async () => {
+      try {
+        const new_access = await fetch_new_access();
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/artisanal/artisanats/count/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${new_access}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch tour operator count. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // console.log('Data from server:', data);
+        setArtisanalCount(data.count);
+      } catch (error) {
+        console.error('Error fetching tour operator count:', error);
+      }
+    };
 
     verifyCookies();
     fetch_AccommodationCount();
     fetch_TourOperatorCount();
+    fetch_ArtisanalCount();
   }, []);
 
   return (
@@ -134,7 +162,7 @@ export default function Component() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center justify-between">
-                    <div className="text-4xl font-bold">78</div>
+                    <div className="text-4xl font-bold">{ArtisanlCount}</div>
                     <BriefcaseIcon className="h-8 w-8 text-primary" />
                   </div>
                 </CardContent>
