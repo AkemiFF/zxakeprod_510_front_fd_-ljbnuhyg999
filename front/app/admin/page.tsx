@@ -124,7 +124,7 @@ export default function Component() {
             >
               <div className="space-y-4 mt-8">
                 <div>
-                  <Label htmlFor="username">Nom d'utilisateur</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
                     id="username"
                     placeholder="Enter your username"
@@ -137,7 +137,7 @@ export default function Component() {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="password">Mot de passe</Label>
+                  <Label htmlFor="password">Password</Label>
                   <Input
                     id="password"
                     placeholder="Enter your password"
@@ -156,9 +156,6 @@ export default function Component() {
                   Login
                 </Button>
               </div>
-              <p className="text-center text-sm mt-4">
-                <Link href="/users/register" className="font-semibold">Créer un compte</Link>
-              </p>
             </form>
           </Card>
         </div>
