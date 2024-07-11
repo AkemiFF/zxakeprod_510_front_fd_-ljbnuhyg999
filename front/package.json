@@ -51,6 +51,7 @@
     "embla-carousel-autoplay": "^8.1.6",
     "embla-carousel-react": "^8.1.6",
     "framer-motion": "^11.2.12",
+    "google-maps-react-markers": "^2.0.10",
     "input-otp": "^1.2.4",
     "js-cookie": "^3.0.5",
     "js-cookies": "^1.0.4",

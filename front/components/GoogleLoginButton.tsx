@@ -1,23 +1,32 @@
-import { useSession, signIn } from 'next-auth/react';
+// components/GoogleLoginButton.tsx
+import { signIn } from "next-auth/react";
 
-export default function GoogleLoginButton() {
-    const { data: session } = useSession();
-
-    const handleLogin = () => {
-        signIn('google');
+const GoogleLoginButton = () => {
+    const handleSignIn = () => {
+        signIn("google");
     };
 
-    function handleLogout(): void {
-        throw new Error('Function not implemented.');
-    }
-
     return (
-        <div>
-            {session ? (
-                <button onClick={handleLogout}>Logout</button>
-            ) : (
-                <button onClick={handleLogin}>Login with Google</button>
-            )}
-        </div>
+
+        <button onClick={handleSignIn}>
+            <SessionProvider>
+
+                {/* <Button */}
+                variant="outline"
+                type="button"
+                className="w-full mb-4 flex items-center justify-center gap-5 rounded-none"
+                >
+
+                <Image src={chrome} width={20} height={20} alt="chrome" />
+                <GoogleLoginButton />
+                {/* <span>Sign up with Google</span> */}
+
+                {/* <GoogleSignupButton /> */}
+
+            </SessionProvider>
+        </Button>
+
     );
-}
+};
+
+export default GoogleLoginButton;
