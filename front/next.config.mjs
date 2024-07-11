@@ -1,18 +1,16 @@
-// @type {import('next').NextConfig} 
-// const nextConfig = {};
-// export default nextConfig;
-import dotenv from 'dotenv';
-dotenv.config();
 
-const config = {
-    env: {
-        GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-        GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-        NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    },
+
+const nextConfig = {
+    //     env: {
+    //         GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    //         GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    //         NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    //         NEXT_PUBLIC_GOOGLE_MAP_API: "Akemi",
+    //         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    //     },
 };
 
-export default config;
+export default nextConfig;
 
 
 // export default {

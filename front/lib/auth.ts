@@ -13,7 +13,6 @@ export const authConfig: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
 
 };
-console.log(process.env.GOOGLE_CLIENT_ID as string);
 export async function loginEstRequisServeur() {
     const session = await getServerSession(authConfig);
     if (!session) return redirect("/");
