@@ -16,12 +16,14 @@ import {
 const UserAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userProfile, setUserProfile] = useState<string | null>(null);
+    const [UserName, setUsername] = useState<string | null>(null);
 
 
     useEffect(() => {
         const accessToken = Cookies.get('access_token');
         const refreshToken = Cookies.get('refresh_token');
         const profile = Cookies.get('profile_user');
+        const username = Cookies.get('username');
 
         if (accessToken || refreshToken) {
             setIsLoggedIn(true);
@@ -31,6 +33,9 @@ const UserAuth = () => {
         if (profile) {
             setUserProfile(profile);
         }
+        if (username) {
+            setUsername(username);
+        }
     }, []);
 
     const handleLogout = () => {
@@ -38,6 +43,7 @@ const UserAuth = () => {
         Cookies.remove('refresh_token');
         Cookies.remove('csrfToken');
         Cookies.remove('profile_user');
+        Cookies.remove('username');
         localStorage.removeItem("user_register_info")
 
         setIsLoggedIn(false);
@@ -66,7 +72,11 @@ const UserAuth = () => {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
+                                {/* <DropdownMenuSeparator /> */}
+                                <DropdownMenuLabel>
+                                    {UserName || "Unknown"}
+                                </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>Cart</DropdownMenuItem>
                                 <DropdownMenuItem>Setting</DropdownMenuItem>

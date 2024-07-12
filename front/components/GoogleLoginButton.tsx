@@ -66,6 +66,7 @@ const verifyUserInfo = async (firebaseInfoUser: UserInfo, setIsLoggedIn: (value:
         if (info) {
             const parsedInfo = JSON.parse(info);
             Cookies.set("profile_user", parsedInfo.photoURL, { expires: 1, secure: true, sameSite: 'Strict' });
+            Cookies.set("username", parsedInfo.displayName, { expires: 1, secure: true, sameSite: 'Strict' });
         }
 
 
