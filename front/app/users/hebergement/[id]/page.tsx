@@ -8,6 +8,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import { Undo2 } from "lucide-react";
@@ -367,7 +368,7 @@ export default function DetailsHebergments() {
             </CardContent>
           </Card><Card className="hover:bg-muted">
             <CardContent className="grid gap-6 h-100">
-              <GoogleMapComposant location={myLocation} />
+              <GoogleMapComposant location={myLocation} zoom = {17} />
             </CardContent>
           </Card>
         </div>

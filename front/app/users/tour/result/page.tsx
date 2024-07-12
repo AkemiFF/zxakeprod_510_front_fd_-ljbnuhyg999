@@ -234,7 +234,7 @@ export default function HebergementList() {
                                   <p className="ms-1 text-sm">Travel distance : <span className = "font-bold">{circuit.distanceTrip}</span></p>
                               </div>
 
-                              <Link href="/users/tour/result/id">
+                              <Link href="/users/tour/trip">
                                 <Button className="hover:opacity-80 text-sm font-semibold">Details</Button>
                               </Link>
                             </div>
