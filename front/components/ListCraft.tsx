@@ -28,64 +28,57 @@ import {
 import Hotelview from "./Hotelview";
 import Link from "next/link";
 import CraftView from "./CraftView";
+import { useEffect, useState } from "react";
+import { fetch_new_access } from "@/lib/csrf";
+import Urlconfig from "@/lib/config";
 
-interface HotelModel {
-  name: string;
-  description: string;
-  rating: number;
+interface CraftModel {
+  type: string;
+  id: number;
+  nom_produit_artisanal: string;
+  description_artisanat: string;
   review: number;
+  rating: number;
+  roomNumber: number;
   address: string;
 }
 
 export default function ListCraft() {
-  const hotels: HotelModel[] = [
-    {
-      name: "Mozart Craft",
+  const [crafts, setCrafts] = useState<CraftModel[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-      description:
-        "Lorem Ipsum is Lorem Ipsum is Lore Lorem Ipsum is Lorem Ipsum is Lorem Ipsum is Lore",
-      rating: 4.5,
-      review: 450,
+  useEffect(() => {
+    const fetchCrafts = async () => {
+      try {
+        const new_access = await fetch_new_access();
+        const response = await fetch(`${Urlconfig.apiBaseUrl}/api/artisanal/produits-artisanal/all/`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${new_access}`,
+          },
+        });
 
-      address: "123 Main St, Paris, France",
-    },
-    {
-      name: "Role Craft",
+        const data = await response.json();
+        // console.log("Data from server:", data);  // Log pour vérifier les données
+        if (data && Array.isArray(data)) {
+          setCrafts(data);
+        } else {
+          console.error("Data is not an array:", data);
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching crafts:", error);
+        setLoading(false);
+      }
+    };
+    fetchCrafts();
+  }, []);
 
-      description: "Stunning view of the Eiffel Tower",
-      rating: 4.7,
-      review: 380,
-
-      address: "456 Elm St, Paris, France",
-    },
-    {
-      name: "Clarisse",
-      description: "Situated in the bustling city center",
-      rating: 4.9,
-      review: 300,
-      address: "789 Oak St, Paris, France",
-    },
-    {
-      name: "Craft Dreams",
-      description: "Nestled in the heart of New York City",
-      rating: 4.2,
-      review: 500,
-
-      address: "101 Maple St, New York, USA",
-    },
-    {
-      name: "Craft Mada",
-      description: "Nestled in the heart of New York City",
-      rating: 4.2,
-      review: 500,
-
-      address: "101 Maple St, New York, USA",
-    },
-  ];
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold"></h1>
+        <h1 className="text-2xl font-bold">Crafts List</h1>
         <div className="flex items-center gap-4">
           <Link href="/admin/hotel/add">
             <Button variant="outline">
@@ -104,14 +97,14 @@ export default function ListCraft() {
         </div>
       </div>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {hotels.map((hotel, i) => (
+        {crafts.map((craft, i) => (
           <CraftView
-            key={hotel.name}
-            name={hotel.name}
-            description={hotel.description}
-            rating={hotel.rating}
-            review={hotel.review}
-            address={hotel.address}
+            key={i}
+            name={craft.nom_produit_artisanal}
+            description={craft.description_artisanat}
+            rating={craft.rating}
+            review={craft.review}
+            address={craft.address}
           />
         ))}
       </div>

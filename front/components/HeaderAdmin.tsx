@@ -63,7 +63,7 @@ export default function HeaderAdmin(props: HeaderAdminProps) {
 
   const clearAllCookies = () => {
     const allCookies = Cookies.get();
-    console.log(allCookies);
+    // console.log(allCookies);
 
     for (const cookieName in allCookies) {
       Cookies.remove(cookieName);
