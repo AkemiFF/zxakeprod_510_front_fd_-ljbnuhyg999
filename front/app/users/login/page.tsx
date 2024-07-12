@@ -19,7 +19,9 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import config from "../../../lib/config";
 import { getCsrfFromToken } from "@/lib/csrf";
-import Router from "next/router";
+import GoogleLoginButton from "@/components/GoogleLoginButton";
+import React from 'react';
+import Urlconfig from "../../../lib/config";
 
 const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
   Cookies.set(name, value, { expires: (1 / 24 / 60) * minutes });
@@ -35,7 +37,7 @@ export default function Component() {
 
     try {
       const csrfToken = await getCsrfFromToken();
-      const response = await fetch(`${config.apiBaseUrl}/api/info/client/login/`, {
+      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,7 +66,6 @@ export default function Component() {
       toast.success("Connexion réussie", { autoClose: 2000 });
       setIsLoggedIn(true);
 
-      // Redirection vers la page d'accueil après une connexion réussie
       window.location.href = "/";
     } catch (error) {
       toast.error("Erreur de connexion", { autoClose: 2000 });
@@ -97,10 +98,13 @@ export default function Component() {
               <p className="text-muted-foreground mb-6 text-center">
                 Welcome back! Please enter your details
               </p>
-              <Button variant="outline" type="button" className="w-full mb-4 flex items-center justify-center gap-5 rounded-none">
+              <GoogleLoginButton />
+              {/* <GoogleLoginButton email={email} password={password} /> */}
+
+              {/* <Button variant="outline" type="button" className="w-full mb-4 flex items-center justify-center gap-5 rounded-none">
                 <Image src={chrome} width={20} height={20} alt="chrome" />
                 <span>Login with Google</span>
-              </Button>
+              </Button> */}
               <div className="flex items-center mb-4">
                 <hr className="flex-1" />
                 <span className="px-2 text-sm text-muted-foreground">OR</span>

@@ -3,26 +3,46 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import config from "../../../lib/config"
+import config from "../../../../lib/config"
 import { Card, CardContent } from "@/components/ui/card";
-import Schema1 from "../../../public/asset-login/Beautiful hotel insights details.png";
-import Schema2 from "../../../public/asset-login/Breakfast on a wooden table with a natural view.png";
-import Schema3 from "../../../public/asset-login/Hand pressing receptionist's bell.png";
-import Schema4 from "../../../public/asset-login/Hotel lobby.png";
+import Schema1 from "../../../../public/asset-login/Beautiful hotel insights details.png";
+import Schema2 from "../../../../public/asset-login/Breakfast on a wooden table with a natural view.png";
+import Schema3 from "../../../../public/asset-login/Hand pressing receptionist's bell.png";
+import Schema4 from "../../../../public/asset-login/Hotel lobby.png";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Cookies from 'js-cookie'
 import { getCsrfFromToken, getCsrfToken } from "@/lib/csrf";
 
-import GoogleSignupButton from "@/components/GoogleSignupButton";
+import { validatePassword } from "@/lib/verify";
+
 export default function Component() {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [password1, setPassword1] = useState("");
+  const [userInfo, setUserInfo] = useState<UserInfo>();
 
+  useEffect(() => {
+    const info = localStorage.getItem("user_register_info");
+    if (info) {
+      setUserInfo(JSON.parse(info));
+    }
+  }, []);
 
+  interface ProviderData {
+    providerId: string;
+    uid: string;
+    phoneNumber?: string;
+  }
+
+  interface UserInfo {
+    displayName: string;
+    email: string;
+    photoURL: string;
+    providerData: ProviderData[];
+  }
 
   return (
     <>
@@ -86,94 +106,69 @@ export default function Component() {
                   });
                   return;
                 }
+                const createClient = async (password: string) => {
 
-                const createClient = async (email: any, password: any) => {
                   try {
-
                     const csrfToken = await getCsrfFromToken();
-                    const response = await fetch(`${config.apiBaseUrl}/api/accounts/client/create/`, {
+                    const response = await fetch(`${config.apiBaseUrl}api/accounts/client/create/emailinfo/`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
                         'X-CSRFToken': csrfToken,
                       },
-                      body: JSON.stringify({ email: email, password: password }),
+
+                      body: JSON.stringify({
+                        username: userInfo?.displayName ?? '',
+                        email: userInfo?.email ?? '',
+                        password: password,
+                        emailProviderId: userInfo?.providerData[0]?.providerId ?? '',
+                        emailProviderUid: userInfo?.providerData[0]?.uid ?? '',
+                        emailPhotoUrl: userInfo?.photoURL ?? '',
+                      }),
                     });
 
                     if (!response.ok) {
                       throw new Error('Failed to create client');
                     }
+                    if (response.ok) {
+                      window.location.href = "/";
+                      localStorage.removeItem("user_register_info");
+                    }
 
-                    const data = await response.json();
-                    console.log("Client created:", data);
-                    return data;
                   } catch (error) {
-                    // console.error("Error creating client:", error.message);
                     throw error;
                   }
                 };
+                if (validatePassword(password)) {
+                  const api = createClient(password)
 
-                const api = createClient(email, password)
+                  api.then(async (response) => {
+                    toast.promise(
+                      api,
+                      {
+                        pending: "Connexion au serveur",
+                        success: "Inscription reussite",
+                        error: "Vous avez déjà un compte",
+                      },
+                      { autoClose: 3000 }
+                    );
+                  })
+                } else {
+                  toast.error("Le mot de passe doit contenir : Lettre Majuscule, Minuscule, Chiffre");
+                }
 
-                api.then(async (response) => {
-                  if (!response.ok) {
-                    const errorData = response.json();
-                    if (errorData.email) {
-                      toast.error(errorData.email[0], {
-                        autoClose: 5000,
-                      });
-                    }
-                    if (errorData.password) {
-                      toast.error(errorData.password[0], {
-                        autoClose: 5000,
-                      });
-                    }
-                  }
-                  return response.json();
-                })
-
-
-
-                toast.promise(
-                  api,
-                  {
-                    pending: "Connexion au serveur",
-                    success: "Inscription reussite",
-                    error: "erreur de Connexion",
-                  },
-                  { autoClose: 2000 }
-                );
               }
               }
             >
               <h2 className="text-2xl font-semibold mb-2 text-center">
-                Sign Up to your account
+                You are almost there
               </h2>
               <p className="text-muted-foreground mb-6 text-center">
-                Welcome ! Please enter your details
+                Create a strong password
               </p>
-              <div>
-                <GoogleSignupButton />
-              </div>
-              <div className="flex items-center mb-4">
-                <hr className="flex-1" />
-                <span className="px-2 text-sm text-muted-foreground">OR</span>
-                <hr className="flex-1" />
-              </div>
+
               <div className="space-y-4">
-                <div>
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    placeholder="Enter your email"
-                    type="email"
-                    required
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                    className="rounded-none"
-                  />
-                </div>
+
                 <div>
                   <Label htmlFor="password">Password</Label>
                   <Input
@@ -216,7 +211,7 @@ export default function Component() {
             </form>
           </Card>
         </div>
-      </div>
+      </div >
     </>
   );
 }
