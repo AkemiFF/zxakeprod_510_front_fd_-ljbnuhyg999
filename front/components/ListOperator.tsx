@@ -68,7 +68,7 @@ export default function ListHotel() {
   return (
     <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold"></h1>
+        <h1 className="text-2xl font-bold">Operatior List</h1>
         <div className="flex items-center gap-4">
           <Link href="/admin/operator/add">
             <Button variant="outline">
