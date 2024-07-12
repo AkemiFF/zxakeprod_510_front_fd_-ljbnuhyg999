@@ -21,6 +21,9 @@ const config = {
       width: {
         '128': '42rem',
       },
+      textUnderlineOffset: {
+        12: '24px',
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
