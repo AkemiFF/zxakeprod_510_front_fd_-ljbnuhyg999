@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Avatar } from "./ui/avatar";
+import UserAuth from "./UserAuth";
 const UserHeader = () => {
   const [connected, setconnected] = useState(false);
   return (
@@ -25,9 +26,9 @@ const UserHeader = () => {
       <header className="w-full bg-primary py-4">
         <div className="  md:container md:mx-auto md:flex max-md:flex-col items-center px-4 md:flex-row md:justify-between md:space-y-0">
           <div className="flex flex-row justify-between">
-              <div className="ps-8">
-              <Image src = {aftrip} alt = {"Logo de Aftrip"} className="w-20 h-20 text-white" />
-              </div>
+            <div className="ps-8">
+              <Image src={aftrip} alt={"Logo de Aftrip"} className="w-20 h-20 text-white" />
+            </div>
 
             <Sheet>
               <div className="max-sm:flex max-sm:flex-row md:hidden mt-6 prr-8">
@@ -113,52 +114,7 @@ const UserHeader = () => {
               About us
             </Link>
           </nav>
-          {!connected && (
-            <div className="flex space-x-4 max-md:hidden">
-              <Link href="/users/login">
-                <Button className="bg-white text-black hover:text-white">
-                  Login
-                </Button>
-              </Link>
-              <Link href="/users/register">
-                <Button className="bg-[#305555] hover:bg-[#305555] hover:opacity-80">
-                  Register
-                </Button>
-              </Link>
-            </div>
-          )}
-          {connected && (
-            <div className="flex mr-5">
-              <div className="flex gap-5">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className=" rounded-full"
-                    >
-                      <Image
-                        src={user}
-                        width={36}
-                        height={36}
-                        alt="Avatar"
-                        className="overflow-hidden rounded-full"
-                      />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Cart</DropdownMenuItem>
-                    <DropdownMenuItem>Setting</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          )}
+          <UserAuth />
         </div>
       </header>
     </div>
