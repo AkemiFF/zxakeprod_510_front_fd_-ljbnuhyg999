@@ -1,13 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { Checkbox } from "@/components/ui/checkbox";
 import Image from "next/image";
 import config from "../../../lib/config"
 import { Card, CardContent } from "@/components/ui/card";
-import chrome from "../../../public/chercher.png";
 import Schema1 from "../../../public/asset-login/Beautiful hotel insights details.png";
 import Schema2 from "../../../public/asset-login/Breakfast on a wooden table with a natural view.png";
 import Schema3 from "../../../public/asset-login/Hand pressing receptionist's bell.png";
@@ -17,10 +14,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from 'js-cookie'
 import { getCsrfFromToken, getCsrfToken } from "@/lib/csrf";
-import GoogleLoginButton from "@/components/GoogleLoginButton";
-import { SessionProvider, signIn } from 'next-auth/react';
+
 import GoogleSignupButton from "@/components/GoogleSignupButton";
 export default function Component() {
   const [email, setEmail] = useState("");
