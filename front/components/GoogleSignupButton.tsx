@@ -7,9 +7,12 @@ import chrome from "../public/chercher.png";
 import Cookies from "js-cookie";
 
 export default function GoogleLoginButton() {
+    const apikey = process.env.NEXT_PUBLIC_GOOGLE_API_FIREBASE as string;
+    const auth_domain = process.env.NEXT_PUBLIC_GOOGLE_FIREBASE_AUTHDOMAIN as string;
+    console.log(apikey)
     const firebaseConfig = {
-        apiKey: "AIzaSyDx_dviqCLZGqXXdLDF5EFjdOJiXROc5mo",
-        authDomain: "test-ce224.firebaseapp.com",
+        apiKey: apikey,
+        authDomain: auth_domain,
         projectId: "test-ce224",
         storageBucket: "test-ce224.appspot.com",
         messagingSenderId: "758626351874",
@@ -37,7 +40,7 @@ export default function GoogleLoginButton() {
 
                 const user = result.user;
 
-                console.log("info_user: ", user);
+                // console.log("info_user: ", user);
                 localStorage.setItem("user_register_info", JSON.stringify(user))
                 window.location.href = "/users/register/create-password";
 
@@ -61,7 +64,7 @@ export default function GoogleLoginButton() {
         >
 
             <Image src={chrome} width={20} height={20} alt="chrome" />
-            Log in with Google
+            Signup with Google
         </Button>
     );
 };
