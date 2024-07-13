@@ -290,13 +290,10 @@ export default function DetailsTripTour() {
             <a href="#overview" className="hover:underline hover:underline-offset-12 hover:decoration-2 hover:decoration-primary font-medium">Overview</a>
           </li>
           <li>
-            <a href="#summary" className="hover:underline hover:underline-offset-12 hover:decoration-2 hover:decoration-primary font-medium md:ms-12">Summary</a>
-          </li>
-          <li>
             <a href="#programs" className="hover:underline hover:underline-offset-12 hover:decoration-2 hover:decoration-primary font-medium md:ms-12">Programs</a>
           </li>
           <li>
-            <a href="#amenities" className="hover:underline hover:underline-offset-12 hover:decoration-2 hover:decoration-primary font-medium md:ms-12">Amenitites</a>
+            <a href="#amenities" className="hover:underline hover:underline-offset-12 hover:decoration-2 hover:decoration-primary font-medium md:ms-12">Amenities</a>
           </li>
         </ul>
       </nav>
@@ -453,6 +450,11 @@ export default function DetailsTripTour() {
                 </div>
 
                 <p className = "mt-4 text-muted-foreground text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, autem.Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, autem.Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, autem.</p>
+
+                <Link href = "#" className = "flex justify-center items-center my-6 w-full">
+                    <Button className="font-bold">Book trip</Button>
+                </Link>
+
             </CardContent>
            </Card>
            
@@ -465,7 +467,7 @@ export default function DetailsTripTour() {
           <Separator className="mt-8"/>
 
           <div className = "px-3 py-8 rounded mt-2">
-              <h4 className="font-bold text-primary text-xl text-center">Let's build your trip together</h4>
+              <h4 className="font-bold text-primary text-xl text-center">Let build your trip together</h4>
               <p className = "mt-2 text-center text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus quibusdam ipsa voluptatem</p>
 
               <Link href = "tel:+261 34 56 789 09" className = "flex justify-center mt-6 ms-4 border border-black py-2 rounded hover:bg-black hover:text-white">
