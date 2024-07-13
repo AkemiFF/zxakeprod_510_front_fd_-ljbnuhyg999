@@ -35,7 +35,7 @@ export default function Component() {
         body: JSON.stringify({ email }),
       });
       const data = response.json()
-      console.log(data)
+
 
       if (!response.ok) {
         throw new Error("Failed to send verification email.");
@@ -50,6 +50,9 @@ export default function Component() {
   const checkEmailExists = async (e: any) => {
     e.preventDefault();
     const csrfToken = await getCsrfTokenDirect();
+    localStorage.setItem("email_user", email);
+
+
     try {
       const linkurl = `${Urlconfig.apiBaseUrl}/api/accounts/client/check-email/`;
 
@@ -120,7 +123,7 @@ export default function Component() {
                   />
                 </div>
                 <Button className="w-full rounded-none bg-[#305555]" type="submit">
-                  Register
+                  Continue
                 </Button>
               </div>
               <p className="text-center text-sm mt-4">

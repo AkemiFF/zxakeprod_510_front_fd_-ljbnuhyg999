@@ -5,23 +5,51 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Urlconfig from "@/lib/config"
 import { Card, CardContent } from "@/components/ui/card";
-import Schema1 from "@/public/asset-login/Beautiful hotel insights details.png";
-import Schema2 from "@/public/asset-login/Breakfast on a wooden table with a natural view.png";
-import Schema3 from "@/public/asset-login/Hand pressing receptionist's bell.png";
-import Schema4 from "@/public/asset-login/Hotel lobby.png";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getCsrfTokenDirect, getCsrfToken } from "@/lib/csrf";
+import { getCsrfTokenDirect } from "@/lib/csrf";
 
-import GoogleSignupButton from "@/components/GoogleSignupButton";
+import { useRouter } from "next/navigation";
+import CustomCard from "@/components/CustomCard";
+import Cookies from "js-cookie";
+
 export default function Component() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [password1, setPassword1] = useState("");
+  const [code, setCode] = useState('');
+  const router = useRouter();
 
+
+  const handleSubmit = async (e: any) => {
+    const csrfToken = await getCsrfTokenDirect();
+    const email = localStorage.getItem("email_user");
+    console.log(email)
+    e.preventDefault();
+    try {
+      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/verify-code/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfToken,
+        },
+        body: JSON.stringify({ email, code }),
+      });
+
+      const data = await response.json();
+
+
+
+      if (response.ok) {
+        toast.success('Verification code is correct');
+        router.push('/users/register/create-password-manual/');
+      } else {
+        toast.error(data.error || 'Verification code is incorrect');
+      }
+    } catch (error: any) {
+      toast.error('An error occurred: ' + error.message);
+    }
+  };
 
 
   return (
@@ -31,120 +59,9 @@ export default function Component() {
       <div className="  flex flex-col items-center">
         <div className="px-10">
           <Card className=" flex flex-col md:flex-row mt-8 bg-white shadow-lg py-4 rounded-none">
-            <CardContent className="flex-1 p-8 bg-[#3d5a5b] text-white mx-10 max-sm:hidden">
-              <div className="flex items-center justify-center gap-2">
-                <Image
-                  src={Schema3}
-                  alt="Image 1"
-                  width={60}
-                  height={40}
-                  className="col-span-1  aspect-[4/10]"
-                />
-                <Image
-                  src={Schema4}
-                  alt="Image 2"
-                  width={60}
-                  height={40}
-                  className=" mt-20 aspect-[4/10]"
-                />
-                <Image
-                  src={Schema2}
-                  alt="Image 3"
-                  width={60}
-                  height={40}
-                  className=" mt-20 max-h-30 aspect-[4/10]"
-                />
-                <Image
-                  src={Schema1}
-                  alt="Image 4"
-                  width={60}
-                  height={40}
-                  className="aspect-[4/10]"
-                />
-              </div>
-              <p className="text-center italic text-lg mb-4 mt-10">
-                Lorem ipsum dolor emet si tu acquiem perma!
-              </p>
-              <p className="text-center text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-                explicabo cupiditate laboriosam blanditiis recusandae iste,
-                nesciunt asperiores alias ratione.
-              </p>
-            </CardContent>
-            <form
+            <CustomCard />
+            <div
               className="flex-1 p-8"
-              onSubmit={async (e) => {
-                e.preventDefault();
-
-                const resolveAfter3Sec = new Promise((resolve) =>
-                  setTimeout(resolve, 2000)
-                );
-
-                if (password !== password1) {
-                  toast.error("Les mots de passe ne correspondent pas", {
-                    autoClose: 3000,
-                  });
-                  return;
-                }
-
-                const createClient = async (email: any, password: any) => {
-                  try {
-
-                    const csrfToken = await getCsrfTokenDirect();
-                    const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/create/`, {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                        'X-CSRFToken': csrfToken,
-                      },
-                      body: JSON.stringify({ email: email, password: password }),
-                    });
-
-                    if (!response.ok) {
-                      throw new Error('Failed to create client');
-                    }
-
-                    const data = await response.json();
-                    console.log("Client created:", data);
-                    return data;
-                  } catch (error) {
-                    // console.error("Error creating client:", error.message);
-                    throw error;
-                  }
-                };
-
-                const api = createClient(email, password)
-
-                api.then(async (response) => {
-                  if (!response.ok) {
-                    const errorData = response.json();
-                    if (errorData.email) {
-                      toast.error(errorData.email[0], {
-                        autoClose: 5000,
-                      });
-                    }
-                    if (errorData.password) {
-                      toast.error(errorData.password[0], {
-                        autoClose: 5000,
-                      });
-                    }
-                  }
-                  return response.json();
-                })
-
-
-
-                toast.promise(
-                  api,
-                  {
-                    pending: "Connexion au serveur",
-                    success: "Inscription reussite",
-                    error: "erreur de Connexion",
-                  },
-                  { autoClose: 2000 }
-                );
-              }
-              }
             >
               <h2 className="text-2xl font-semibold mb-2 text-center">
                 Sign Up to your account
@@ -162,7 +79,7 @@ export default function Component() {
                     type="number"
                     required
                     onChange={(e) => {
-                      setPassword1(e.target.value);
+                      setCode(e.target.value);
                     }}
                     className="rounded-none"
                   />
@@ -170,8 +87,9 @@ export default function Component() {
                 <Button
                   className="w-full rounded-none bg-[#305555]"
                   type="submit"
+                  onClick={handleSubmit}
                 >
-                  Register
+                  Continue
                 </Button>
               </div>
               <p className="text-center text-sm mt-4">
@@ -180,7 +98,7 @@ export default function Component() {
                   Login
                 </Link>
               </p>
-            </form>
+            </div>
           </Card>
         </div>
       </div>
