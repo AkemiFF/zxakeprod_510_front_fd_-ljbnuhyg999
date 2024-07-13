@@ -5,10 +5,6 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import config from "../../../../lib/config"
 import { Card, CardContent } from "@/components/ui/card";
-import Schema1 from "../../../../public/asset-login/Beautiful hotel insights details.png";
-import Schema2 from "../../../../public/asset-login/Breakfast on a wooden table with a natural view.png";
-import Schema3 from "../../../../public/asset-login/Hand pressing receptionist's bell.png";
-import Schema4 from "../../../../public/asset-login/Hotel lobby.png";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
 import { useEffect, useState } from "react";

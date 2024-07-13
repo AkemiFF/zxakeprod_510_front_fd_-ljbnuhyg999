@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import Urlconfig from "@/lib/config"
 import { Card, CardContent } from "@/components/ui/card";
 import UserHeader from "@/components/UserHeader";
@@ -15,9 +14,10 @@ import { validatePassword } from "@/lib/verify";
 
 import { useRouter } from "next/navigation";
 import CustomCard from "@/components/CustomCard";
-
+import { custom_login } from "@/lib/csrf"
 export default function Component() {
     const [password, setPassword] = useState("");
+    const [username, setUsername] = useState("");
     const [password1, setPassword1] = useState("");
     const router = useRouter();
 
@@ -36,19 +36,23 @@ export default function Component() {
         }
         const createClient = async (password: string) => {
             try {
-                const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/create/`, {
+                const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/create-with-username/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': csrfToken,
                     },
-                    body: JSON.stringify({ email, password }),
+                    body: JSON.stringify({ email, username, password }),
                 });
 
-                const data = await response.json();
-                router.push('/');
-
-
+                if (response) {
+                    const waiting = await custom_login(username, password);
+                    if (waiting) {
+                        router.push('/');
+                    } else {
+                        console.log("Ts mety", waiting)
+                    }
+                }
             } catch (error: any) {
                 toast.error('An error occurred: ' + error.message);
             }
@@ -96,6 +100,18 @@ export default function Component() {
                             <div className="space-y-4">
 
                                 <div>
+                                    <Label htmlFor="username">Password</Label>
+                                    <Input
+                                        id="username"
+                                        placeholder="Enter a username"
+                                        type="text"
+                                        required
+                                        onChange={(e) => {
+                                            setUsername(e.target.value);
+                                        }}
+                                        className="rounded-none"
+                                    />
+                                </div>                  <div>
                                     <Label htmlFor="password">Password</Label>
                                     <Input
                                         id="password"
