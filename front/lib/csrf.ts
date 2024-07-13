@@ -40,7 +40,7 @@ export const fetch_new_access = async () => {
 };
 
 
-export const getCsrfFromToken = async () => {
+export const getCsrfTokenDirect = async () => {
     try {
         const response = await fetch(`${config.apiBaseUrl}/api/get-csrf-token-direct/`, {
             method: "GET",

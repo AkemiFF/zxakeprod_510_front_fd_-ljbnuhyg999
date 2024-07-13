@@ -18,7 +18,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import config from "../../../lib/config";
-import { getCsrfFromToken } from "@/lib/csrf";
+import { getCsrfTokenDirect } from "@/lib/csrf";
 import GoogleLoginButton from "@/components/GoogleLoginButton";
 import React from 'react';
 import Urlconfig from "../../../lib/config";
@@ -36,7 +36,7 @@ export default function Component() {
     e.preventDefault();
 
     try {
-      const csrfToken = await getCsrfFromToken();
+      const csrfToken = await getCsrfTokenDirect();
       const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/login/`, {
         method: "POST",
         headers: {
