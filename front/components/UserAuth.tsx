@@ -13,23 +13,55 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import Urlconfig from '@/lib/config';
 const UserAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userProfile, setUserProfile] = useState<string | null>(null);
+    const [UserName, setUsername] = useState<string | null>(null);
 
 
     useEffect(() => {
         const accessToken = Cookies.get('access_token');
         const refreshToken = Cookies.get('refresh_token');
         const profile = Cookies.get('profile_user');
+        const username = Cookies.get('username');
 
-        if (accessToken || refreshToken) {
-            setIsLoggedIn(true);
+        const checkRefreshToken = async () => {
+            try {
+                const response = await fetch(`${Urlconfig.apiBaseUrl}/api/token/refresh/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ refresh: refreshToken })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    Cookies.set('access_token', data.access, { expires: 1, secure: true, sameSite: 'Strict' });
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                    Cookies.remove('access_token');
+                    Cookies.remove('refresh_token');
+                }
+            } catch (error) {
+                console.error('Error checking refresh token:', error);
+                setIsLoggedIn(false);
+                Cookies.remove('access_token');
+                Cookies.remove('refresh_token');
+            }
+        };
+        if (refreshToken) {
+            checkRefreshToken();
         } else {
             setIsLoggedIn(false);
         }
         if (profile) {
             setUserProfile(profile);
+        }
+        if (username) {
+            setUsername(username);
         }
     }, []);
 
@@ -38,6 +70,7 @@ const UserAuth = () => {
         Cookies.remove('refresh_token');
         Cookies.remove('csrfToken');
         Cookies.remove('profile_user');
+        Cookies.remove('username');
         localStorage.removeItem("user_register_info")
 
         setIsLoggedIn(false);
@@ -66,7 +99,11 @@ const UserAuth = () => {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                                {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
+                                {/* <DropdownMenuSeparator /> */}
+                                <DropdownMenuLabel>
+                                    {UserName || "Unknown"}
+                                </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
                                 <DropdownMenuItem>Cart</DropdownMenuItem>
                                 <DropdownMenuItem>Setting</DropdownMenuItem>

@@ -5,7 +5,7 @@ import Image from "next/image";
 import chrome from "../public/chercher.png";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from 'react';
-import { getCsrfFromToken } from "@/lib/csrf";
+import { getCsrfTokenDirect } from "@/lib/csrf";
 import Urlconfig from "@/lib/config";
 import { toast } from "react-toastify";
 import { userInfo } from "os";
@@ -36,7 +36,7 @@ const setCookieWithExpiry = (name: string, value: string, days: number, secure: 
 
 const verifyUserInfo = async (firebaseInfoUser: UserInfo, setIsLoggedIn: (value: boolean) => void) => {
     try {
-        const csrfToken = await getCsrfFromToken();
+        const csrfToken = await getCsrfTokenDirect();
         const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/loginwithemail/`, {
             method: "POST",
             headers: {
@@ -66,6 +66,7 @@ const verifyUserInfo = async (firebaseInfoUser: UserInfo, setIsLoggedIn: (value:
         if (info) {
             const parsedInfo = JSON.parse(info);
             Cookies.set("profile_user", parsedInfo.photoURL, { expires: 1, secure: true, sameSite: 'Strict' });
+            Cookies.set("username", parsedInfo.displayName, { expires: 1, secure: true, sameSite: 'Strict' });
         }
 
 
