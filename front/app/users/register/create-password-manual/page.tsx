@@ -100,7 +100,7 @@ export default function Component() {
                             <div className="space-y-4">
 
                                 <div>
-                                    <Label htmlFor="username">Password</Label>
+                                    <Label htmlFor="username">Username</Label>
                                     <Input
                                         id="username"
                                         placeholder="Enter a username"
