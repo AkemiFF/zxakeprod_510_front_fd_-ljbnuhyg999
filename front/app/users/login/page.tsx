@@ -143,9 +143,9 @@ export default function Component() {
                     <Checkbox id="remember" />
                     <Label htmlFor="remember">Remember me</Label>
                   </div>
-                  <a href="#" className="text-sm text-muted-foreground">
+                  <Link href="/users/login/forgot-password" className="text-sm text-muted-foreground">
                     Forgotten password?
-                  </a>
+                  </Link>
                 </div>
                 <Button className="w-full rounded-none bg-[#305555]" type="submit">
                   Login
