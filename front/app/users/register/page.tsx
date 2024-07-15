@@ -34,7 +34,7 @@ export default function Component() {
         },
         body: JSON.stringify({ email }),
       });
-      const data = response.json()
+      // const data = response.json()
 
 
       if (!response.ok) {
