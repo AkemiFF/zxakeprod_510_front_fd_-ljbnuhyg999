@@ -23,7 +23,7 @@ export default function ForgotPasswordForm() {
   const sendPasswordResetEmail = async (email: any) => {
     try {
       const csrfToken = await getCsrfTokenDirect();
-      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/send-verification-code/`, {
+      const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/send-recovery-code/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
