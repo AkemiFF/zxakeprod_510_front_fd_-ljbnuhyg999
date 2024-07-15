@@ -13,6 +13,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import Urlconfig from '@/lib/config';
 const UserAuth = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [userProfile, setUserProfile] = useState<string | null>(null);
@@ -25,8 +26,34 @@ const UserAuth = () => {
         const profile = Cookies.get('profile_user');
         const username = Cookies.get('username');
 
-        if (accessToken || refreshToken) {
-            setIsLoggedIn(true);
+        const checkRefreshToken = async () => {
+            try {
+                const response = await fetch(`${Urlconfig.apiBaseUrl}/api/token/refresh/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ refresh: refreshToken })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    Cookies.set('access_token', data.access, { expires: 1, secure: true, sameSite: 'Strict' });
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                    Cookies.remove('access_token');
+                    Cookies.remove('refresh_token');
+                }
+            } catch (error) {
+                console.error('Error checking refresh token:', error);
+                setIsLoggedIn(false);
+                Cookies.remove('access_token');
+                Cookies.remove('refresh_token');
+            }
+        };
+        if (refreshToken) {
+            checkRefreshToken();
         } else {
             setIsLoggedIn(false);
         }

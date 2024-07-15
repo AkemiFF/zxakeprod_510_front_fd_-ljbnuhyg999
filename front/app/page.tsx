@@ -159,7 +159,7 @@ export default function Home() {
   const form2 = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-  console.log(form, form2);
+
 
   const handleAccommodationItemSelected = (selectedValue: string) => {
     console.log("Selected item:", selectedValue);
