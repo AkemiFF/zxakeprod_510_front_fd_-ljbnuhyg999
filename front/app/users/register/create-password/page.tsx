@@ -5,19 +5,16 @@ import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import config from "../../../../lib/config"
 import { Card, CardContent } from "@/components/ui/card";
-import Schema1 from "../../../../public/asset-login/Beautiful hotel insights details.png";
-import Schema2 from "../../../../public/asset-login/Breakfast on a wooden table with a natural view.png";
-import Schema3 from "../../../../public/asset-login/Hand pressing receptionist's bell.png";
-import Schema4 from "../../../../public/asset-login/Hotel lobby.png";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from 'js-cookie'
-import { getCsrfFromToken, getCsrfToken } from "@/lib/csrf";
+import { getCsrfTokenDirect, getCsrfToken } from "@/lib/csrf";
 
 import { validatePassword } from "@/lib/verify";
+import CustomCard from "@/components/CustomCard";
 
 export default function Component() {
   const [password, setPassword] = useState("");
@@ -51,46 +48,7 @@ export default function Component() {
       <div className="  flex flex-col items-center">
         <div className="px-10">
           <Card className=" flex flex-col md:flex-row mt-8 bg-white shadow-lg py-4 rounded-none">
-            <CardContent className="flex-1 p-8 bg-[#3d5a5b] text-white mx-10 max-sm:hidden">
-              <div className="flex items-center justify-center gap-2">
-                <Image
-                  src={Schema3}
-                  alt="Image 1"
-                  width={60}
-                  height={40}
-                  className="col-span-1  aspect-[4/10]"
-                />
-                <Image
-                  src={Schema4}
-                  alt="Image 2"
-                  width={60}
-                  height={40}
-                  className=" mt-20 aspect-[4/10]"
-                />
-                <Image
-                  src={Schema2}
-                  alt="Image 3"
-                  width={60}
-                  height={40}
-                  className=" mt-20 max-h-30 aspect-[4/10]"
-                />
-                <Image
-                  src={Schema1}
-                  alt="Image 4"
-                  width={60}
-                  height={40}
-                  className="aspect-[4/10]"
-                />
-              </div>
-              <p className="text-center italic text-lg mb-4 mt-10">
-                Lorem ipsum dolor emet si tu acquiem perma!
-              </p>
-              <p className="text-center text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat
-                explicabo cupiditate laboriosam blanditiis recusandae iste,
-                nesciunt asperiores alias ratione.
-              </p>
-            </CardContent>
+            <CustomCard />
             <form
               className="flex-1 p-8"
               onSubmit={async (e) => {
@@ -109,8 +67,8 @@ export default function Component() {
                 const createClient = async (password: string) => {
 
                   try {
-                    const csrfToken = await getCsrfFromToken();
-                    const response = await fetch(`${config.apiBaseUrl}api/accounts/client/create/emailinfo/`, {
+                    const csrfToken = await getCsrfTokenDirect();
+                    const response = await fetch(`${config.apiBaseUrl}/api/accounts/client/create/emailinfo/`, {
                       method: "POST",
                       headers: {
                         "Content-Type": "application/json",
@@ -131,8 +89,9 @@ export default function Component() {
                       throw new Error('Failed to create client');
                     }
                     if (response.ok) {
-                      window.location.href = "/";
                       localStorage.removeItem("user_register_info");
+                      window.location.href = "/";
+
                     }
 
                   } catch (error) {

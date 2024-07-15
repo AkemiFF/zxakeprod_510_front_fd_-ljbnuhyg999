@@ -5,9 +5,10 @@ import Image from "next/image";
 import chrome from "../public/chercher.png";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from 'react';
-import { getCsrfFromToken } from "@/lib/csrf";
+import { getCsrfTokenDirect } from "@/lib/csrf";
 import Urlconfig from "@/lib/config";
 import { toast } from "react-toastify";
+import { userInfo } from "os";
 
 interface ProviderData {
     providerId: string;
@@ -21,17 +22,21 @@ interface UserInfo {
     photoURL: string;
     providerData: ProviderData[];
 }
-
-const setCookieWithExpiry = (name: string, value: string, days: number) => {
+const setCookieWithExpiry = (name: string, value: string, days: number, secure: boolean = true, sameSite: 'Strict' | 'Lax' | 'None' = 'Strict') => {
     const date = new Date();
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = `; expires=${date.toUTCString()}`;
-    document.cookie = `${name}=${value || ""}${expires}; path=/`;
+
+    Cookies.set(name, value, {
+        expires: date,
+        secure: secure,
+        sameSite: sameSite
+    });
 };
+
 
 const verifyUserInfo = async (firebaseInfoUser: UserInfo, setIsLoggedIn: (value: boolean) => void) => {
     try {
-        const csrfToken = await getCsrfFromToken();
+        const csrfToken = await getCsrfTokenDirect();
         const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/loginwithemail/`, {
             method: "POST",
             headers: {
@@ -53,14 +58,25 @@ const verifyUserInfo = async (firebaseInfoUser: UserInfo, setIsLoggedIn: (value:
         }
 
         setCookieWithExpiry("csrfToken", csrfToken, 5);
-        setCookieWithExpiry("access", data.access, 5);
-        Cookies.set("refresh", data.refresh, { expires: 1 });
+        setCookieWithExpiry("access_token", data.access, 5);
+
+        Cookies.set("refresh_token", data.refresh, { expires: 1, secure: true, sameSite: 'Strict' });
+
+        const info = localStorage.getItem("user_register_info");
+        if (info) {
+            const parsedInfo = JSON.parse(info);
+            Cookies.set("profile_user", parsedInfo.photoURL, { expires: 1, secure: true, sameSite: 'Strict' });
+            Cookies.set("username", parsedInfo.displayName, { expires: 1, secure: true, sameSite: 'Strict' });
+        }
+
+
+        localStorage.removeItem("user_register_info");
 
         toast.success("Connexion réussie", { autoClose: 2000 });
         setIsLoggedIn(true);
         setTimeout(() => {
             window.location.href = "/";
-        }, 500);
+        }, 1000);
     } catch (error) {
         toast.error("Erreur de connexion", { autoClose: 2000 });
     }

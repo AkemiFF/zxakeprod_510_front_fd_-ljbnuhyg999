@@ -8,8 +8,6 @@ import chrome from "../public/chercher.png";
 const GoogleSignupButton: React.FC = () => {
     const apikey = process.env.NEXT_PUBLIC_GOOGLE_API_FIREBASE as string;
     const auth_domain = process.env.NEXT_PUBLIC_GOOGLE_FIREBASE_AUTHDOMAIN as string;
-    console.log(auth_domain)
-
     const firebaseConfig = {
         apiKey: apikey,
         authDomain: auth_domain,
@@ -37,7 +35,6 @@ const GoogleSignupButton: React.FC = () => {
 
                 if (credential) {
                     const token = credential.accessToken;
-                    console.log("Access Token: ", token);
                 }
 
                 const user = result.user;
