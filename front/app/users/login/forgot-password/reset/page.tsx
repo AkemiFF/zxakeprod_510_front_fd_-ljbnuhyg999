@@ -1,8 +1,10 @@
+// components/ResetPasswordForm.tsx
+
 "use client";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import Urlconfig from "@/lib/config"
+import Urlconfig from "@/lib/config";
 import { Card, CardContent } from "@/components/ui/card";
 import UserHeader from "@/components/UserHeader";
 import Link from "next/link";
@@ -11,22 +13,20 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getCsrfTokenDirect } from "@/lib/csrf";
 import { validatePassword } from "@/lib/verify";
-
 import { useRouter } from "next/navigation";
 import CustomCard from "@/components/CustomCard";
-import { custom_login } from "@/lib/csrf"
-export default function Component() {
+import { custom_login } from "@/lib/csrf";
+
+export default function ResetPasswordForm() {
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [password1, setPassword1] = useState("");
     const router = useRouter();
 
-
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         const csrfToken = await getCsrfTokenDirect();
         const email = localStorage.getItem("email_user");
-
 
         if (password !== password1) {
             toast.error("Les mots de passe ne correspondent pas", {
@@ -34,118 +34,81 @@ export default function Component() {
             });
             return;
         }
-        const createClient = async (password: string) => {
+
+        const resetPassword = async (password: string) => {
             try {
-                const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/create-with-username/`, {
+                const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/reset-password/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRFToken': csrfToken,
                     },
-                    body: JSON.stringify({ email, username, password }),
+                    body: JSON.stringify({ email, password }),
                 });
 
-                if (response) {
-                    const waiting = await custom_login(username, password);
-                    if (waiting) {
-                        router.push('/');
-                    } else {
-                        console.log("Ts mety", waiting)
-                    }
+                if (!response.ok) {
+                    throw new Error("Failed to reset password.");
                 }
+
+                localStorage.removeItem("email_user");
+                toast.success("Password reset successfully. Please log in.");
+                router.push('/users/login');
             } catch (error: any) {
                 toast.error('An error occurred: ' + error.message);
             }
         }
 
         if (validatePassword(password)) {
-            const api = createClient(password)
-
-            api.then(async (response) => {
-                toast.promise(
-                    api,
-                    {
-                        pending: "Connexion au serveur",
-                        success: "Inscription reussite",
-                        error: "Vous avez déjà un compte",
-                    },
-                    { autoClose: 3000 }
-                );
-            })
+            resetPassword(password);
         } else {
             toast.error("Le mot de passe doit contenir : Lettre Majuscule, Minuscule, Chiffre");
         }
     };
 
-
     return (
         <>
             <ToastContainer position="bottom-right" />
             <UserHeader />
-            <div className="  flex flex-col items-center">
+            <div className="flex flex-col items-center">
                 <div className="px-10">
-                    <Card className=" flex flex-col md:flex-row mt-8 bg-white shadow-lg py-4 rounded-none">
+                    <Card className="flex flex-col md:flex-row mt-8 bg-white shadow-lg py-4 rounded-none">
                         <CustomCard />
-                        <form
-                            className="flex-1 p-8"
-                            onSubmit={handleSubmit}
-                        >
+                        <form className="flex-1 p-8" onSubmit={handleSubmit}>
                             <h2 className="text-2xl font-semibold mb-2 text-center">
-                                You are almost there
+                                Reset your password
                             </h2>
                             <p className="text-muted-foreground mb-6 text-center">
-                                Create a strong password
+                                Create a new strong password
                             </p>
-
                             <div className="space-y-4">
-
                                 <div>
-                                    <Label htmlFor="username">Username</Label>
-                                    <Input
-                                        id="username"
-                                        placeholder="Enter a username"
-                                        type="text"
-                                        required
-                                        onChange={(e) => {
-                                            setUsername(e.target.value);
-                                        }}
-                                        className="rounded-none"
-                                    />
-                                </div>                  <div>
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">New Password</Label>
                                     <Input
                                         id="password"
-                                        placeholder="Enter your password"
+                                        placeholder="Enter your new password"
                                         type="password"
                                         required
-                                        onChange={(e) => {
-                                            setPassword(e.target.value);
-                                        }}
+                                        onChange={(e) => setPassword(e.target.value)}
                                         className="rounded-none"
                                     />
                                 </div>
                                 <div>
-                                    <Label htmlFor="password">Confirm Password</Label>
+                                    <Label htmlFor="password1">Confirm Password</Label>
                                     <Input
                                         id="password1"
-                                        placeholder="Confirm your password"
+                                        placeholder="Confirm your new password"
                                         type="password"
                                         required
-                                        onChange={(e) => {
-                                            setPassword1(e.target.value);
-                                        }}
+                                        onChange={(e) => setPassword1(e.target.value)}
                                         className="rounded-none"
                                     />
                                 </div>
-                                <Button
-                                    className="w-full rounded-none bg-[#305555]"
-                                    type="submit"
-                                >
-                                    Register
+                                <Button className="w-full rounded-none bg-[#305555]" type="submit">
+                                    Reset Password
                                 </Button>
                             </div>
                             <p className="text-center text-sm mt-4">
-                                I have an account{" "}
+                                Remembered your password?{" "}
                                 <Link href="/users/login" className="font-semibold">
                                     Login
                                 </Link>
@@ -153,9 +116,7 @@ export default function Component() {
                         </form>
                     </Card>
                 </div>
-            </div >
+            </div>
         </>
     );
 }
-
-
