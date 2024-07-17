@@ -15,11 +15,9 @@ import { getCsrfTokenDirect } from "@/lib/csrf";
 import { validatePassword } from "@/lib/verify";
 import { useRouter } from "next/navigation";
 import CustomCard from "@/components/CustomCard";
-import { custom_login } from "@/lib/csrf";
 
 export default function ResetPasswordForm() {
     const [password, setPassword] = useState("");
-    const [username, setUsername] = useState("");
     const [password1, setPassword1] = useState("");
     const router = useRouter();
 
