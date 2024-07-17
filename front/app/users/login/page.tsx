@@ -17,11 +17,11 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
-import config from "../../../lib/config";
-import { getCsrfFromToken } from "@/lib/csrf";
+import { getCsrfTokenDirect } from "@/lib/csrf";
 import GoogleLoginButton from "@/components/GoogleLoginButton";
 import React from 'react';
 import Urlconfig from "../../../lib/config";
+import { useRouter } from "next/navigation";
 
 const setCookieWithExpiry = (name: any, value: any, minutes: any) => {
   Cookies.set(name, value, { expires: (1 / 24 / 60) * minutes });
@@ -31,12 +31,13 @@ export default function Component() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const router = useRouter();
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
 
     try {
-      const csrfToken = await getCsrfFromToken();
+      const csrfToken = await getCsrfTokenDirect();
       const response = await fetch(`${Urlconfig.apiBaseUrl}/api/accounts/client/login/`, {
         method: "POST",
         headers: {
@@ -58,15 +59,19 @@ export default function Component() {
         }
         return;
       }
-
-      setCookieWithExpiry("csrfToken", csrfToken, 5);
-      setCookieWithExpiry("access", data.access, 5);
-      Cookies.set("refresh", data.refresh, { expires: 1 });
+      if (data.access) {
+        Cookies.set('access_token', data.access, { expires: 7, secure: true, sameSite: 'strict' });
+      }
+      if (data.refresh) {
+        Cookies.set('refresh_token', data.refresh, { expires: 30, secure: true, sameSite: 'strict' });
+      }
 
       toast.success("Connexion réussie", { autoClose: 2000 });
       setIsLoggedIn(true);
 
-      window.location.href = "/";
+      // window.location.href = "/";
+      router.push('/');
+
     } catch (error) {
       toast.error("Erreur de connexion", { autoClose: 2000 });
     }
@@ -138,9 +143,9 @@ export default function Component() {
                     <Checkbox id="remember" />
                     <Label htmlFor="remember">Remember me</Label>
                   </div>
-                  <a href="#" className="text-sm text-muted-foreground">
+                  <Link href="/users/login/forgot-password" className="text-sm text-muted-foreground">
                     Forgotten password?
-                  </a>
+                  </Link>
                 </div>
                 <Button className="w-full rounded-none bg-[#305555]" type="submit">
                   Login

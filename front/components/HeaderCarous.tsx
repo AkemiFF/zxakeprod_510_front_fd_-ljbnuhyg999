@@ -154,7 +154,6 @@ const HeaderCarous = () => {
   const form2 = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
-  console.log(form, form2);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     toast({
